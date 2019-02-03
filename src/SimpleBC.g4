@@ -15,15 +15,20 @@ import java.util.HashMap;
         fnMap.put("l", new Fn() { public double execute(double arg) { return Math.log(arg); } });
         fnMap.put("e", new Fn() { public double execute(double arg) { return Math.pow(Math.E, arg); } });
     }
+    public static HashMap<String, Double> varMap = new HashMap<>();
 }
 
 /*parser rules */
 exprList: topExpr ( EXPR_END topExpr)* EXPR_END? ;
 
-varDef: VAR ID '=' arith_expr;
+/* value assignments in bc return the value
+however, if you only assign the value,
+the statement the result is not printed */
+varDef returns [double i]: ID '=' value=arith_expr { varMap.put($ID.text, $value.i); $i=$value.i; } ;
 
 topExpr: 
-      arith_expr { System.out.println("Result: "+ Double.toString($arith_expr.i));} 
+      varDef 
+    | arith_expr { System.out.println("Result: "+ Double.toString($arith_expr.i));} 
     ;
 
 arith_expr returns [double i]:
@@ -32,10 +37,11 @@ arith_expr returns [double i]:
     | el=arith_expr op='/' er=arith_expr { $i=$el.i/$er.i; }
     | el=arith_expr op='+' er=arith_expr { $i=$el.i+$er.i; }
     | el=arith_expr op='-' er=arith_expr { $i=$el.i-$er.i; }
+    | var=varDef { $i=$var.i;}
     | FLOAT { $i=Double.parseDouble($FLOAT.text); }
-    | ID 
+    | ID { $i=0; if (varMap.containsKey($ID.text)) { $i = varMap.get($ID.text); }  }
     | func { $i = $func.i ;}
-    | '(' e=arith_expr ')'
+    | '(' e=arith_expr ')' { $i = $e.i; }
     ;
 
 func returns [double i]:
