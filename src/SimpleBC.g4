@@ -15,7 +15,17 @@ import java.util.HashMap;
         fnMap.put("l", new Fn() { public double execute(double arg) { return Math.log(arg); } });
         fnMap.put("e", new Fn() { public double execute(double arg) { return Math.pow(Math.E, arg); } });
     }
+
+		// Variable Map
     public static HashMap<String, Double> varMap = new HashMap<>();
+		public static Double getOrCreate(String id) {
+			if (varMap.containsKey(id)) {
+				return varMap.get(id);
+			} else {
+				varMap.put(id, 0.0);
+				return 0.0;
+			}
+		}
 }
 
 /*parser rules */
@@ -27,12 +37,16 @@ the statement the result is not printed */
 varDef returns [double i]: ID '=' value=arith_expr { varMap.put($ID.text, $value.i); $i=$value.i; } ;
 
 topExpr:
-      varDef
+      varDef { System.out.println("Result: "+ Double.toString($varDef.i));}
     | arith_expr { System.out.println("Result: "+ Double.toString($arith_expr.i));}
     ;
 
 arith_expr returns [double i]:
-      el=arith_expr op='^' er=arith_expr { $i=Math.pow($el.i, $er.i); }
+			op='++' ID { double oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal+1); $i=oldVal+1; }
+		|	op='--' ID { double oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal-1); $i=oldVal-1; }
+		| ID op='++' { double oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal+1); $i=oldVal; }
+		| ID op='--' { double oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal-1); $i=oldVal; }
+    | el=arith_expr op='^' er=arith_expr { $i=Math.pow($el.i, $er.i); }
     | el=arith_expr op='*' er=arith_expr { $i=$el.i*$er.i; }
     | el=arith_expr op='/' er=arith_expr { $i=$el.i/$er.i; }
     | el=arith_expr op='%' er=arith_expr { $i=$el.i%$er.i; }
@@ -40,7 +54,7 @@ arith_expr returns [double i]:
     | el=arith_expr op='-' er=arith_expr { $i=$el.i-$er.i; }
     | var=varDef { $i=$var.i;}
     | FLOAT { $i=Double.parseDouble($FLOAT.text); }
-    | ID { $i=0; if (varMap.containsKey($ID.text)) { $i = varMap.get($ID.text); }  }
+    | ID { $i=getOrCreate($ID.text); }
     | func { $i = $func.i ;}
     | '(' e=arith_expr ')' { $i = $e.i; }
     ;
