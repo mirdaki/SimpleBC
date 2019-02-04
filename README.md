@@ -15,9 +15,10 @@ Have OpenJDK version 8 installed and follow [these instructions](https://github.
 To compile and run a simple calculator, follow these steps
 
 ```bash
-antlr4 Calculator.g4
-javac Calculator*.java
-grun Calculator expr -tree test/input.txt
+cd src/
+antlr4 SimpleBC.g4
+javac SimpleBC*.java
+grun SimpleBC exprList -tree ../test/scratchpad.bc
 ```
 
 ## License
