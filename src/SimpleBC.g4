@@ -42,7 +42,6 @@ arith_expr returns [double i]:
 	| el=arith_expr op='/' er=arith_expr { $i=$el.i/$er.i; }
 	| el=arith_expr op='+' er=arith_expr { $i=$el.i+$er.i; }
 	| el=arith_expr op='-' er=arith_expr { $i=$el.i-$er.i; }
-	| el=arith_expr op='==' er=arith_expr { if ($el.i==$er.i) { $i=1; } else { $i=0; } }
 	| op='!' e=arith_expr { if ($e.i==0) { $i=1; } else { $i=0; } }
 	| el=arith_expr op='&&' er=arith_expr { if ($el.i!=0&&$er.i!=0) { $i=1; } else { $i=0; } }
 	| el=arith_expr op='||' er=arith_expr { if ($el.i!=0||$er.i!=0) { $i=1; } else { $i=0; } }
