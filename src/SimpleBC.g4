@@ -34,7 +34,6 @@ varDef: VAR ID '=' arith_expr;
 
 topExpr:
 		arith_expr { System.out.println(Double.toString($arith_expr.i)); }
-	// | bool_expr { System.out.println(Double.toString($bool_expr.i)); }
 	;
 
 arith_expr returns [double i]:
@@ -43,29 +42,20 @@ arith_expr returns [double i]:
 	| el=arith_expr op='/' er=arith_expr { $i=$el.i/$er.i; }
 	| el=arith_expr op='+' er=arith_expr { $i=$el.i+$er.i; }
 	| el=arith_expr op='-' er=arith_expr { $i=$el.i-$er.i; }
-	| el=arith_expr op='==' er=arith_expr { if ($el.i==$er.i) { $i=1; } else { $i=0; } }
+	| el=arith_expr op='==' er=arith_expr { Double left = new Double($el.i);
+	Double right = new Double($er.i);
+	/* System.out.println("left: " + left);
+	System.out.println("right: " + right);
+	System.out.println("e: " + left.equals($er.i)); */
+	if (left.equals($er.i)) { /* System.out.println("true!"); */ $i=1; } /* else {  System.out.println("false!") ; $i=0; } */ }
 	| op='!' e=arith_expr { if ($e.i==0) { $i=1; } else { $i=0; } }
 	| el=arith_expr op='&&' er=arith_expr { if ($el.i!=0&&$er.i!=0) { $i=1; } else { $i=0; } }
 	| el=arith_expr op='||' er=arith_expr { if ($el.i!=0||$er.i!=0) { $i=1; } else { $i=0; } }
-	// | bool_expr { $i = $bool_expr.i; }
 	| FLOAT { $i=Double.parseDouble($FLOAT.text); }
 	| func { $i = $func.i ;}
 	| ID
 	| '(' e=arith_expr ')'
 	;
-
-/* bool_expr returns [double i]:
-		el=arith_expr op='==' er=arith_expr {
-			if ($el.i==$er.i) {
-				$i=1;
-			} else {
-				$i=0;
-			} }
-	| FLOAT { $i=Double.parseDouble($FLOAT.text); }
-	| func { $i = $func.i ;}
-	| ID
-	| '(' e=bool_expr ')'
-	; */
 
 func returns [double i]:
 		'read()' { $i = input.nextDouble(); }
