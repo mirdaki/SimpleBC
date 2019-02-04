@@ -54,7 +54,7 @@ arith_expr returns [double i]:
 	| FLOAT { $i=Double.parseDouble($FLOAT.text); }
 	| func { $i = $func.i ;}
 	| ID
-	| '(' e=arith_expr ')'
+	| '(' e=arith_expr ')' { $i = $e.i; }
 	;
 
 func returns [double i]:
