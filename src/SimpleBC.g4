@@ -26,15 +26,16 @@ however, if you only assign the value,
 the statement the result is not printed */
 varDef returns [double i]: ID '=' value=arith_expr { varMap.put($ID.text, $value.i); $i=$value.i; } ;
 
-topExpr: 
-      varDef 
-    | arith_expr { System.out.println("Result: "+ Double.toString($arith_expr.i));} 
+topExpr:
+      varDef
+    | arith_expr { System.out.println("Result: "+ Double.toString($arith_expr.i));}
     ;
 
 arith_expr returns [double i]:
       el=arith_expr op='^' er=arith_expr { $i=Math.pow($el.i, $er.i); }
     | el=arith_expr op='*' er=arith_expr { $i=$el.i*$er.i; }
     | el=arith_expr op='/' er=arith_expr { $i=$el.i/$er.i; }
+    | el=arith_expr op='%' er=arith_expr { $i=$el.i%$er.i; }
     | el=arith_expr op='+' er=arith_expr { $i=$el.i+$er.i; }
     | el=arith_expr op='-' er=arith_expr { $i=$el.i-$er.i; }
     | var=varDef { $i=$var.i;}
@@ -50,7 +51,7 @@ func returns [double i]:
 /*lexer rules*/
 COMMENT: [/][*](.)*?[*][/] -> skip;
 /*
-Comments is defined with the lazy definition so that 
+Comments is defined with the lazy definition so that
 we match the nearest * /
 */
 
