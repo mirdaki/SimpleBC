@@ -5,7 +5,7 @@
 					"name": "simple-bc",
 					"type": "antlr-debug",
 					"request": "launch",
-					"input": "test/comment-test.txt",
+					"input": "test/scratchpad.bc",
 					"grammar": "src/SimpleBC.g4",
 					"startRule": "exprList",
 					"printParseTree": true,
