@@ -21,6 +21,21 @@ javac SimpleBC*.java
 grun SimpleBC exprList -tree ../test/scratchpad.bc
 ```
 
+### Testing
+
+To automatically test each of the `*-input.bc` and `*-output.txt` pairs. Run the below commands
+
+```bash
+cd src/
+./test-all.sh
+```
+
+It will output if each test Passes or Fails.
+
+Files currently not automatically tested: `read-function.bc`
+
+Also, the `scratchpad.bc` is configured to be the automatic test file for the VSCode debugger (press "F5").
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
