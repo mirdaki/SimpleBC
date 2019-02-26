@@ -2,11 +2,11 @@
 	"version": "2.0.0",
 	"configurations": [
 		{
-			"name": "simple-bc",
+			"name": "SimpleBC",
 			"type": "antlr-debug",
 			"request": "launch",
 			"input": "test/scratchpad.bc",
-			"grammar": "src/SimpleBC.g4",
+			"grammar": "src/main/antlr4/com/codecaptured/SimpleBC/SimpleBC.g4",
 			"startRule": "exprList",
 			"printParseTree": true,
 			"visualParseTree": true

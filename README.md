@@ -1,4 +1,4 @@
-# Simple bc
+# SimpleBC
 
 A simplified version of bc (basic calculator) using ANTLR 4 for the Programming Language Concepts class
 
@@ -6,17 +6,35 @@ A simplified version of bc (basic calculator) using ANTLR 4 for the Programming 
 
 ### Installing
 
-Have OpenJDK version 8 installed and follow [these instructions](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md) for installing ANTLR 4.
+This project requires:
+- [OpenJDK](https://openjdk.java.net/) version 8
+- [Maven](https://maven.apache.org/) 3.5.4
+- [ANTLR4](https://www.antlr.org/) ([Instructions here](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md)).
 
-### Simple Example
+### Compiling
 
-To compile and run a simple calculator, follow these steps
+To compile (or run the VSCode Build task):
 
 ```bash
-cd src/
-antlr4 SimpleBC.g4
-javac SimpleBC*.java
-grun SimpleBC exprList -tree ../test/scratchpad.bc
+mvn package
+```
+
+> Note: If you just want to generate the ANTLR code, run this instead `mvn antlr4:antlr4`
+
+### Running
+
+To run from the terminal:
+
+```bash
+java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC
+```
+
+and press `ctrl+D` once done.
+
+To run from a file:
+
+```bash
+java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC < test/scratchpad.bc
 ```
 
 ### Testing
@@ -24,7 +42,6 @@ grun SimpleBC exprList -tree ../test/scratchpad.bc
 To automatically test each of the `*-input.bc` and `*-output.txt` pairs in `test/auto/`. Run the below commands
 
 ```bash
-cd src/
 ./test-all.sh
 ```
 
@@ -34,13 +51,15 @@ Files currently not automatically tested: `read-function.bc`, `print-function.bc
 
 Also, the `scratchpad.bc` is configured to be the automatic test file for the VSCode debugger (press "F5").
 
+<!-- TODO: Get `mvn testing` and JUnit tests working -->
+
 ## Other Info
 
 ### Arbitrary Precision
 
-This version of simple-bc uses the BigDecimal class internally, instead of the double primitive. Just like bc, the scale is controlled with an internal variable. By default, it is set to 20.
+This version of SimpleBC uses the BigDecimal class internally, instead of the double primitive. Just like bc, the scale is controlled with an internal variable. By default, it is set to 20.
 
-The following code produces the same output in both bc -l and simple-bc:
+The following code produces the same output in both bc -l and SimpleBC:
 
 ```
 > scale
