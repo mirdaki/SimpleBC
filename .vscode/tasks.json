@@ -30,16 +30,9 @@
 			}
 		},
 		{
-			"label": "Build and Test",
-			"dependsOn": [
-				"Build",
-				"Test"
-			]
-		},
-		{
 			"label": "Clean Src",
 			"type": "shell",
-			"command": "find . ! -name 'SimpleBc.g4' -name `test-all.sh` -type f -exec rm -f {} +",
+			"command": "find src/ -type f -not -name 'SimpleBC.g4' -not -name 'test-all.sh' -delete",
 			"presentation": {
 				"reveal": "always",
 				"panel": "shared"

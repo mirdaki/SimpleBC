@@ -9,7 +9,7 @@
 export CLASSPATH=".:/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH"
 
 # Default values for testing files
-relative_path_test_directory=$'../test/'
+relative_path_test_directory=$'../test/auto/'
 input_file_suffix=$'-input.bc'
 output_file_suffix=$'-output.txt'
 
