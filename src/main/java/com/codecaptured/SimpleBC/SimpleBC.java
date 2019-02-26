@@ -1,23 +1,26 @@
 package com.codecaptured.SimpleBC;
 
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.tree.ParseTree;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class SimpleBC {
 	public static void main(String[] args) throws Exception {
-		// create a CharStream that reads from standard input
-		ANTLRInputStream input = new ANTLRInputStream(System.in);
-
-		// create a lexer that feeds off of input CharStream
-		ArrayInitLexer lexer = new ArrayInitLexer(input);
-
-		// create a buffer of tokens pulled from the lexer
+		String inputFile = null;
+		if (args.length > 0)
+			inputFile = args[0];
+		InputStream is = System.in;
+		if (inputFile != null)
+			is = new FileInputStream(inputFile);
+		ANTLRInputStream input = new ANTLRInputStream(is);
+		SimpleBCLexer lexer = new SimpleBCLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		SimpleBCParser parser = new SimpleBCParser(tokens);
+		ParseTree tree = parser.exprList(); // parse
 
-		// create a parser that feeds off the tokens buffer
-		ArrayInitParser parser = new ArrayInitParser(tokens);
-
-		ParseTree tree = parser.init(); // begin parsing at init rule
-		System.out.println(tree.toStringTree(parser)); // print LISP-style tree
+		EvalVisitor eval = new EvalVisitor();
+		eval.visit(tree);
 	}
 }

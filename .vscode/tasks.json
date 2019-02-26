@@ -6,7 +6,7 @@
 		{
 			"label": "Build",
 			"type": "shell",
-			"command": "cd src/; java -Xmx500M -cp '/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH' org.antlr.v4.Tool SimpleBC.g4; javac -cp '/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH' SimpleBC*.java",
+			"command": "mvn package",
 			"group": {
 				"kind": "build",
 				"isDefault": true
@@ -19,7 +19,7 @@
 		{
 			"label": "Test",
 			"type": "shell",
-			"command": "cd src/; ./test-all.sh",
+			"command": "./test-all.sh",
 			"group": {
 				"kind": "test",
 				"isDefault": true
@@ -30,14 +30,13 @@
 			}
 		},
 		{
-			"label": "Clean Src",
+			"label": "Clean",
 			"type": "shell",
-			"command": "find src/ -type f -not -name 'SimpleBC.g4' -not -name 'test-all.sh' -delete",
+			"command": "mvn clean",
 			"presentation": {
 				"reveal": "always",
 				"panel": "shared"
-			},
-			"problemMatcher": []
+			}
 		}
 	]
 }
