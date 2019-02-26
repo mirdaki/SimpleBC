@@ -1,15 +1,15 @@
 {
 	"version": "2.0.0",
 	"configurations": [
-			{
-					"name": "simple-bc",
-					"type": "antlr-debug",
-					"request": "launch",
-					"input": "test/scratchpad.bc",
-					"grammar": "src/SimpleBC.g4",
-					"startRule": "exprList",
-					"printParseTree": true,
-					"visualParseTree": true
-			}
+		{
+			"name": "simple-bc",
+			"type": "antlr-debug",
+			"request": "launch",
+			"input": "test/scratchpad.bc",
+			"grammar": "src/SimpleBC.g4",
+			"startRule": "exprList",
+			"printParseTree": true,
+			"visualParseTree": true
+		}
 	]
 }
