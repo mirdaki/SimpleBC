@@ -29,6 +29,8 @@ To run from the terminal:
 java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC
 ```
 
+and press `ctrl+D` once done.
+
 To run from a file:
 
 ```bash
