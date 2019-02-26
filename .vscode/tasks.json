@@ -6,7 +6,7 @@
 		{
 			"label": "Build",
 			"type": "shell",
-			"command": "cd src/; antlr4 SimpleBC.g4; javac SimpleBC*.java",
+			"command": "cd src/; java -Xmx500M -cp '/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH' org.antlr.v4.Tool SimpleBC.g4; javac -cp '/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH' SimpleBC*.java",
 			"group": {
 				"kind": "build",
 				"isDefault": true
@@ -30,11 +30,14 @@
 			}
 		},
 		{
-			"label": "Build and Test",
-			"dependsOn": [
-				"Build",
-				"Test"
-			]
+			"label": "Clean Src",
+			"type": "shell",
+			"command": "find src/ -type f -not -name 'SimpleBC.g4' -not -name 'test-all.sh' -delete",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
 		}
 	]
 }

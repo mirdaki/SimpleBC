@@ -1,15 +1,18 @@
 /* hey how's it goin */
 1
 /* here are more comments,
+222/21
 if you were interested*/
 
 /*Still print this*/ 3
 
 # Hello
-2 # There
+2+1 # There
 # Ignore # this
 
+# /* Please ignore */
 
+/* # Also ignore this */ 1.0
 
 
 

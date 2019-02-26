@@ -1,14 +1,14 @@
 grammar SimpleBC;
 
 /* Include Java libraries */
-@header{
+@header {
     import java.util.HashMap;
     import java.util.Scanner;
     import java.math.BigDecimal;
 }
 
 /* Global Java code */
-@members{
+@members {
     // Input for functions
     public static Scanner input = new Scanner(System.in);
 
@@ -36,7 +36,7 @@ grammar SimpleBC;
         }
         if (varMap.containsKey(id)) {
             return varMap.get(id);
-        } 
+        }
         else {
             varMap.put(id, BigDecimal.ZERO);
             return BigDecimal.ZERO;
@@ -53,7 +53,7 @@ grammar SimpleBC;
             scale = value.intValue();
         }
         varMap.put(id, value);
-                
+
     }
     // Special variable
     static int scale = 20;
@@ -66,59 +66,76 @@ grammar SimpleBC;
 /* Parser rules */
 exprList: (topExpr? EXPR_END)*;
 
-/* value assignments in bc return the value
-however, if you only assign the value,
-the statement the result is not printed */
-varDef returns [BigDecimal i]: ID '=' arithExpr { set($ID.text, $arithExpr.i); $i=$arithExpr.i; } ;
+/* value assignments in bc return the value however, if you only assign the value, the statement the
+ * esult is not printed
+ */
+varDef
+	returns[BigDecimal i]:
+	ID '=' arithExpr { set($ID.text, $arithExpr.i); $i=$arithExpr.i; };
 
 topExpr:
-      varDef
-    | printStatment {System.out.println($printStatment.i); }
-    | arithExpr { set("last", $arithExpr.i); System.out.println($arithExpr.i); }
-    ;
+	varDef
+	| printStatment {System.out.println($printStatment.i); }
+	| arithExpr { set("last", $arithExpr.i); System.out.println($arithExpr.i); };
 
-printStatment returns [String i]:
-        'print' {$i = "";} ((arithExpr {$i += $arithExpr.i;} | '"' s=ID '"' {$i += $s.text;}) ',')* (arithExpr {varMap.put("last", $arithExpr.i); $i += $arithExpr.i;} | '"' s=ID '"' {$i += $s.text;})
-        ;
+printStatment
+	returns[String i]:
+	'print' {$i = "";} (
+		(
+			arithExpr {$i += $arithExpr.i;}
+			| '"' s = ID '"' {$i += $s.text;}
+		) ','
+	)* (
+		arithExpr {varMap.put("last", $arithExpr.i); $i += $arithExpr.i;}
+		| '"' s = ID '"' {$i += $s.text;}
+	);
 
-arithExpr returns [BigDecimal i]:
-      op='++' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal.add(BigDecimal.ONE); }
-    | op='--' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal.subtract(BigDecimal.ONE); }
-    | ID op='++' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal; }
-    | ID op='--' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal; }
-    | op='-' e=arithExpr { $i= $e.i.negate(); }
-    | <assoc=right> el=arithExpr op='^' er=arithExpr { $i=($el.i.pow($er.i.intValue())); } // note that floating point values cannot be passed to pow... just like bc
-    | el=arithExpr op=('*'|'/') er=arithExpr { $i=($op.text.equals("*")) ? $el.i.multiply($er.i) : $el.i.divide($er.i, scale, BigDecimal.ROUND_DOWN); }
-    | el=arithExpr op=('+'|'-') er=arithExpr { $i=($op.text.equals("+")) ? $el.i.add($er.i) : $el.i.subtract($er.i); }
-    | op='!' e=arithExpr { if ($e.i.equals(BigDecimal.ZERO)) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } }
-    | el=arithExpr op='&&' er=arithExpr { if (!($el.i.equals(BigDecimal.ZERO))&&!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } }
-    | el=arithExpr op='||' er=arithExpr { if (!($el.i.equals(BigDecimal.ZERO))||!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } }
-    | varDef { $i = $varDef.i;}
-    | FLOAT { $i = new BigDecimal($FLOAT.text); }
-    | ID { $i=getOrCreate($ID.text); }
-    | func { $i = $func.i ;}
-    | '(' e=arithExpr ')' { $i = $e.i; }
-    ;
+arithExpr
+	returns[BigDecimal i]:
+	op = '++' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal.add(BigDecimal.ONE);
+		}
+	| op = '--' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal.subtract(BigDecimal.ONE);
+		}
+	| ID op = '++' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal;
+	}
+	| ID op = '--' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal;
+		}
+	| op = '-' e = arithExpr { $i= $e.i.negate(); }
+	| <assoc = right> el = arithExpr op = '^' er = arithExpr { $i=($el.i.pow($er.i.intValue())); }
+	// note that floating point values cannot be passed to pow... just like bc
+	| el = arithExpr op = ('*' | '/') er = arithExpr { $i=($op.text.equals("*")) ? $el.i.multiply($er.i) : $el.i.divide($er.i, scale, BigDecimal.ROUND_DOWN);
+		}
+	| el = arithExpr op = ('+' | '-') er = arithExpr { $i=($op.text.equals("+")) ? $el.i.add($er.i) : $el.i.subtract($er.i);
+		}
+	| op = '!' e = arithExpr { if ($e.i.equals(BigDecimal.ZERO)) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; }
+		}
+	| el = arithExpr op = '&&' er = arithExpr { if (!($el.i.equals(BigDecimal.ZERO))&&!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; }
+		}
+	| el = arithExpr op = '||' er = arithExpr { if (!($el.i.equals(BigDecimal.ZERO))||!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; }
+		}
+	| varDef { $i = $varDef.i;}
+	| FLOAT { $i = new BigDecimal($FLOAT.text); }
+	| ID { $i=getOrCreate($ID.text); }
+	| func { $i = $func.i ;}
+	| '(' e = arithExpr ')' { $i = $e.i; };
 
-
-func returns [BigDecimal i]:
-    'read()' { $i = new BigDecimal(input.nextLine().trim()); }
-    | ID '(' arg=arithExpr ')' { $i=fnMap.get($ID.text).execute($arg.i).setScale(scale, BigDecimal.ROUND_DOWN); }
-    ;
-
+func
+	returns[BigDecimal i]:
+	'read()' { $i = new BigDecimal(input.nextLine().trim()); }
+	| ID '(' arg = arithExpr ')' { $i=fnMap.get($ID.text).execute($arg.i).setScale(scale, BigDecimal.ROUND_DOWN);
+		};
 
 /* Lexer rules */
-C_COMMENT: [/][*](.|[\r\n])*?[*][/] -> skip;
+C_COMMENT: [/][*](. | [\r\n])*? [*][/] -> skip;
 /*
-Comments is defined with the lazy definition so that
-we match the nearest * /
-*/
+ Comments is defined with the lazy definition so that we match the nearest * /
+ */
 
-VAR: 'var';  // keyword
+VAR: 'var'; // keyword
 ID: [_A-Za-z]+;
-FLOAT: [0-9]*[.]?[0-9]+;
+FLOAT: [0-9]* [.]? [0-9]+;
 EXPR_END: LINE_END | [;] | [EOF] | P_COMMENT;
-WS : [ \t]+ -> skip ;
+WS: [ \t]+ -> skip;
 
-fragment LINE_END: '\r'?'\n';
-fragment P_COMMENT: [#](.)*?LINE_END;
+fragment LINE_END: '\r'? '\n';
+fragment P_COMMENT: [#](.)*? LINE_END;
