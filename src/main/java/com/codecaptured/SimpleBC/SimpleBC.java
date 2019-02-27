@@ -18,7 +18,7 @@ public class SimpleBC {
 		SimpleBCLexer lexer = new SimpleBCLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		SimpleBCParser parser = new SimpleBCParser(tokens);
-		ParseTree tree = parser.exprList(); // parse
+		ParseTree tree = parser.prog(); // parse
 
 		EvalVisitor eval = new EvalVisitor();
 		eval.visit(tree);

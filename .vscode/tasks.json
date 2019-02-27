@@ -37,6 +37,16 @@
 				"reveal": "always",
 				"panel": "shared"
 			}
+		},
+		{
+			"label": "Scratchpad",
+			"type": "shell",
+			"command": "java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC < test/scratchpad.bc",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
 		}
 	]
 }
