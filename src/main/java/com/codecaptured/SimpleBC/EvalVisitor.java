@@ -1,7 +1,6 @@
 package com.codecaptured.SimpleBC;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.math.BigDecimal;
 
@@ -198,7 +197,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 			case "*":
 				return left.multiply(right);
 			case "/":
-				return left.divide(right);
+				return left.divide(right, scale, BigDecimal.ROUND_DOWN);
 			case "+":
 				return left.add(right);
 			case "-":
