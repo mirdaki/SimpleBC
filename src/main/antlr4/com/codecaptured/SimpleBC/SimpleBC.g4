@@ -67,47 +67,54 @@ grammar SimpleBC;
 prog: (stat? EXPR_END)*;
 
 stat
-	: varDef
-	| print {System.out.println($print.i); }
-	| expr { set("last", $expr.i); System.out.println($expr.i); }
+	: varDef #varStat
+	| printFunc { System.out.println($printFunc.i); } #printFuncStat
+	| printQuote { System.out.println($printQuote.i); } #printQuoteStat
+	| expr { set("last", $expr.i); /* System.out.println($expr.i); */ } #exprStat
 	;
 
-varDef returns[BigDecimal i]: ID '=' expr { set($ID.text, $expr.i); $i=$expr.i; };
+varDef returns[BigDecimal i]
+	: ID '=' expr { set($ID.text, $expr.i); $i=$expr.i; };
 
-print returns[String i]
+printFunc returns[String i]
 	: 'print' {$i = "";} (( expr {$i += $expr.i;}
-	| '"' s = ID '"' {$i += $s.text;}) ',')* (expr {varMap.put("last", $expr.i); $i += $expr.i; } | '"' s = ID '"' {$i += $s.text;})
+		| '"' s = ID '"' {$i += $s.text;}) ',')* (expr {varMap.put("last", $expr.i); $i += $expr.i; }
+		| '"' s = ID '"' {$i += $s.text;})
+	;
+
+printQuote returns[String i]
+	: '"' s = STRING_INPUT '"' {$i += $s.text;}
 	;
 
 expr returns[BigDecimal i]
-	: op = '++' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal.add(BigDecimal.ONE); }
-	| op = '--' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal.subtract(BigDecimal.ONE); }
-	| ID op = '++' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal; }
-	| ID op = '--' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal; }
-	| op = '-' e = expr { $i= $e.i.negate(); }
-	| <assoc = right> el = expr op = '^' er = expr { $i=($el.i.pow($er.i.intValue())); }
+	: op = ('++'|'--') ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal.add(BigDecimal.ONE); } #preUnExpr
+	| op = '--' ID { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal.subtract(BigDecimal.ONE); } #preUnExpr
+	| ID op = ('++'|'--') { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.add(BigDecimal.ONE)); $i=oldVal; } #postUnExpr
+	| ID op = '--' { BigDecimal oldVal = getOrCreate($ID.text); varMap.put($ID.text, oldVal.subtract(BigDecimal.ONE)); $i=oldVal; } #postUnExpr
+	| op = '-' e = expr { $i= $e.i.negate(); } #unExpr
+	| <assoc = right> el = expr op = '^' er = expr { $i=($el.i.pow($er.i.intValue())); } #biExpr
 	// note that floating point values cannot be passed to pow... just like bc
-	| el = expr op = ('*' | '/') er = expr { $i=($op.text.equals("*")) ? $el.i.multiply($er.i) : $el.i.divide($er.i, scale, BigDecimal.ROUND_DOWN); }
-	| el = expr op = ('+' | '-') er = expr { $i=($op.text.equals("+")) ? $el.i.add($er.i) : $el.i.subtract($er.i); }
-	| op = '!' e = expr { if ($e.i.equals(BigDecimal.ZERO)) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } }
-	| el = expr op = '&&' er = expr { if (!($el.i.equals(BigDecimal.ZERO))&&!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } }
-	| el = expr op = '||' er = expr { if (!($el.i.equals(BigDecimal.ZERO))||!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } }
-	| varDef { $i = $varDef.i;}
-	| FLOAT { $i = new BigDecimal($FLOAT.text); }
-	| ID { $i=getOrCreate($ID.text); }
-	| func { $i = $func.i ;}
-	| '(' e = expr ')' { $i = $e.i; }
+	| el = expr op = ('*'|'/') er = expr { $i=($op.text.equals("*")) ? $el.i.multiply($er.i) : $el.i.divide($er.i, scale, BigDecimal.ROUND_DOWN); } #biExpr
+	| el = expr op = ('+'|'-') er = expr { $i=($op.text.equals("+")) ? $el.i.add($er.i) : $el.i.subtract($er.i); } #biExpr
+	| op = '!' e = expr { if ($e.i.equals(BigDecimal.ZERO)) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } } #unExpr
+	| el = expr op = '&&' er = expr { if (!($el.i.equals(BigDecimal.ZERO))&&!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } } #biExpr
+	| el = expr op = '||' er = expr { if (!($el.i.equals(BigDecimal.ZERO))||!($er.i.equals(BigDecimal.ZERO))) { $i=BigDecimal.ONE; } else { $i=BigDecimal.ZERO; } } #biExpr
+	| varDef { $i = $varDef.i;} #varDefExpr
+	| FLOAT { $i = new BigDecimal($FLOAT.text); } #floatExpr
+	| ID { $i=getOrCreate($ID.text); } #varExpr
+	| func { $i = $func.i ;} #funcExpr
+	| '(' e = expr ')' { $i = $e.i; } #parenExpr
 	;
 
 func returns[BigDecimal i]
-	: 'read()' { $i = new BigDecimal(input.nextLine().trim()); }
-	| ID '(' arg = expr ')' { $i=fnMap.get($ID.text).execute($arg.i).setScale(scale, BigDecimal.ROUND_DOWN); }
+	: ID '(' arg = expr ')' { $i=fnMap.get($ID.text).execute($arg.i).setScale(scale, BigDecimal.ROUND_DOWN); }
 	;
 
 /* Lexer rules */
 C_COMMENT: [/][*](. | [\r\n])*? [*][/] -> skip;
 ID: [_A-Za-z]+;
 FLOAT: [0-9]* [.]? [0-9]+;
+STRING_INPUT: [_A-Za-z0-9.]+;
 EXPR_END: LINE_END | [;] | [EOF] | P_COMMENT;
 WS: [ \t]+ -> skip;
 

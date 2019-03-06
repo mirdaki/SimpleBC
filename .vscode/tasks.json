@@ -39,7 +39,7 @@
 			}
 		},
 		{
-			"label": "Scratchpad",
+			"label": "Run Scratchpad",
 			"type": "shell",
 			"command": "java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC < test/scratchpad.bc",
 			"presentation": {
@@ -47,6 +47,16 @@
 				"panel": "shared"
 			},
 			"problemMatcher": []
-		}
+		},
+		{
+			"label": "Run Terminal",
+			"type": "shell",
+			"command": "java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
 	]
 }
