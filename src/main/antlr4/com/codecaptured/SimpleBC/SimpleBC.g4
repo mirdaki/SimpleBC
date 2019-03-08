@@ -5,8 +5,7 @@ prog: (stat? EXPR_END)*;
 
 stat
 	: varDef #varStat
-	| printFunc #printFuncStat
-	| printQuote #printQuoteStat
+	| print #printStat
 	| expr #exprStat
 	;
 
@@ -14,40 +13,31 @@ varDef
 	: ID '=' expr
 	;
 
-/* printFunc returns[String i]
-	: 'print' {$i = "";} (( expr {$i += $expr.i;}
-		| '"' s = ID '"' {$i += $s.text;}) ',')* (expr {varMap.put("last", $expr.i); $i += $expr.i; }
-		| '"' s = ID '"' {$i += $s.text;})
-	; */
-
-printFunc
-	: 'print' (printEval ',')* printEval
+print
+	: 'print' (printEval ',')* printEval #funcPrint
+	| '"' ID '"' #stringPrint
 	;
 
 printEval
-	: e = expr
-	| '"' s = STRING '"'
-	;
-
-printQuote
-	: '"' s = STRING '"'
+	: expr #exprPrintEval
+	| '"' ID '"' #stringPrintEval
 	;
 
 expr
 	: op = ('++'|'--') ID #preUnExpr
 	| ID op = ('++'|'--') #postUnExpr
-	| op = '-' e = expr #unExpr
+	| op = '-' expr #unExpr
 	| <assoc = right> el = expr op = '^' er = expr #biExpr
 	| el = expr op = ('*'|'/') er = expr #biExpr
 	| el = expr op = ('+'|'-') er = expr #biExpr
-	| op = '!' e = expr #unExpr
+	| op = '!' expr #unExpr
 	| el = expr op = '&&' er = expr #biExpr
 	| el = expr op = '||' er = expr #biExpr
 	| varDef #varDefExpr
 	| FLOAT #floatExpr
 	| ID #varExpr
 	| func #funcExpr
-	| '(' e = expr ')' #parenExpr
+	| '(' expr ')' #parenExpr
 	;
 
 func
@@ -58,7 +48,6 @@ func
 C_COMMENT: [/][*](. | [\r\n])*? [*][/] -> skip;
 ID: [_A-Za-z]+;
 FLOAT: [0-9]* [.]? [0-9]+;
-STRING: .+;
 EXPR_END: LINE_END | [;] | [EOF] | P_COMMENT;
 WS: [ \t]+ -> skip;
 

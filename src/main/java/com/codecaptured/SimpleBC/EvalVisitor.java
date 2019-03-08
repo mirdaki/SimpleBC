@@ -13,82 +13,65 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 
 	// Define function interface and map
 	public interface Fn {
-			public BigDecimal execute(BigDecimal arg);
+		public BigDecimal execute(BigDecimal arg);
 	}
 
 	public static HashMap<String, Fn> fnMap = new HashMap<String, Fn>();
 
 	// Default functions
 	static {
-			fnMap.put("sqrt", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sqrt(arg.doubleValue())); } });
-			fnMap.put("s", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sin(arg.doubleValue())); } });
-			fnMap.put("c", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.cos(arg.doubleValue())); } });
-			fnMap.put("l", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.log(arg.doubleValue())); } });
-			fnMap.put("e", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.exp(arg.doubleValue())); } });
-			fnMap.put("read", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(input.nextLine().trim()); } });
+		fnMap.put("sqrt", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sqrt(arg.doubleValue())); } });
+		fnMap.put("s", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sin(arg.doubleValue())); } });
+		fnMap.put("c", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.cos(arg.doubleValue())); } });
+		fnMap.put("l", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.log(arg.doubleValue())); } });
+		fnMap.put("e", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.exp(arg.doubleValue())); } });
+		fnMap.put("read", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(input.nextLine().trim()); } });
 	}
 
 	// Variable map
 	public static HashMap<String, BigDecimal> varMap = new HashMap<>();
 	public static BigDecimal getOrCreate(String id) {
-			if (id.equals("scale")) {
-					return new BigDecimal(scale);
-			}
-			if (varMap.containsKey(id)) {
-					return varMap.get(id);
-			}
-			else {
-					varMap.put(id, BigDecimal.ZERO);
-					return BigDecimal.ZERO;
-			}
+		if (id.equals("scale")) {
+			return new BigDecimal(scale);
+		}
+		if (varMap.containsKey(id)) {
+			return varMap.get(id);
+		}
+		else {
+			varMap.put(id, BigDecimal.ZERO);
+			return BigDecimal.ZERO;
+		}
 	}
 
 	public static void set(String id, BigDecimal value) {
-			//check that scale is not set to negative
-			if (id.equals("scale")) {
-					if (value.compareTo(BigDecimal.ZERO) == -1) {
-							System.out.println("Cannot set scale to negative value");
-							System.exit(-1);
-					}
-					scale = value.intValue();
+		//check that scale is not set to negative
+		if (id.equals("scale")) {
+			if (value.compareTo(BigDecimal.ZERO) == -1) {
+				System.out.println("Cannot set scale to negative value");
+				System.exit(-1);
 			}
-			varMap.put(id, value);
-
+			scale = value.intValue();
+		}
+		varMap.put(id, value);
 	}
+
 	// Special variable
 	static int scale = 20;
 
 	// Default variables
 	static {
-			varMap.put("last", BigDecimal.ZERO);
+		varMap.put("last", BigDecimal.ZERO);
 	}
 
 	/* Visitors */
 
 	// Statements (modify state or do something)
 	@Override
-	public BigDecimal visitProg(SimpleBCParser.ProgContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
 	public BigDecimal visitVarStat(SimpleBCParser.VarStatContext ctx) {
-		String var = ctx.varDef().ID.getText();
-		BigDecimal value = visit(ctx.varDef().expr);
+		String var = ctx.varDef().ID().getText();
+		BigDecimal value = visit(ctx.varDef().expr());
 		set(var, value);
 		return value;
-	}
-
-	@Override public BigDecimal visitPrintFuncStat(SimpleBCParser.PrintFuncStatContext ctx) {
-		/* {$i = "";} (( expr {$i += $expr.i;}
-		| '"' s = ID '"' {$i += $s.text;}) ',')* (expr {varMap.put("last", $expr.i); $i += $expr.i; }
-		| '"' s = ID '"' {$i += $s.text;}) */
-		return BigDecimal.ZERO;
-	}
-
-	@Override public BigDecimal visitPrintQuoteStat(SimpleBCParser.PrintQuoteStatContext ctx) {
-		System.out.println(ctx.printQuote().s.getText());
-		return BigDecimal.ZERO;
 	}
 
 	@Override
@@ -99,31 +82,59 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		return result;
 	}
 
+	// Print Statements
+	@Override
+	public BigDecimal visitFuncPrint(SimpleBCParser.FuncPrintContext ctx) {
+		// The print function should all the arguments on the same line before returning
+		BigDecimal result = visitChildren(ctx);
+		System.out.println();
+		return result;
+	}
+
+	@Override
+	public BigDecimal visitStringPrint(SimpleBCParser.StringPrintContext ctx) {
+		System.out.println(ctx.ID().getText());
+		return BigDecimal.ZERO;
+	}
+
+	@Override
+	public BigDecimal visitExprPrintEval(SimpleBCParser.ExprPrintEvalContext ctx) {
+		System.out.print(visit(ctx.expr()));
+		return BigDecimal.ZERO;
+	}
+
+	@Override
+	public BigDecimal visitStringPrintEval(SimpleBCParser.StringPrintEvalContext ctx) {
+		System.out.print(ctx.ID().getText());
+		return BigDecimal.ZERO;
+	}
+
 	// Expressions (return a value always)
 	// Float
 	@Override
 	public BigDecimal visitFloatExpr(SimpleBCParser.FloatExprContext ctx) {
-		return new BigDecimal(ctx.FLOAT.getText());
+		return new BigDecimal(ctx.FLOAT().getText());
 	}
 
 	// ID
 	@Override
 	public BigDecimal visitVarExpr(SimpleBCParser.VarExprContext ctx) {
-		return getOrCreate(ctx.ID.getText());
+		return getOrCreate(ctx.ID().getText());
 	}
 
 	// Function ()
 	@Override
 	public BigDecimal visitFuncExpr(SimpleBCParser.FuncExprContext ctx) {
-		String funcName = ctx.func.ID.getText();
-		BigDecimal arg = visit(ctx.func.arg);
+		String funcName = ctx.func().ID().getText();
+
+		BigDecimal arg = visit(ctx.func().expr());
 		return fnMap.get(funcName).execute(arg).setScale(scale, BigDecimal.ROUND_DOWN);
 	}
 
 	// '++' ID, '--' ID
 	@Override
 	public BigDecimal visitPreUnExpr(SimpleBCParser.PreUnExprContext ctx) {
-		String var = ctx.ID.getText();
+		String var = ctx.ID().getText();
 		BigDecimal originalValue = getOrCreate(var);
 		switch (ctx.op.getText()) {
 			case "++":
@@ -139,7 +150,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 
 	// '-' expr, ! expr
 	@Override public BigDecimal visitUnExpr(SimpleBCParser.UnExprContext ctx) {
-		BigDecimal value = visit(ctx.e);
+		BigDecimal value = visit(ctx.expr());
 		switch (ctx.op.getText()) {
 			case "-":
 				return value.negate();
@@ -157,7 +168,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	// ID '++', ID '--'
 	@Override
 	public BigDecimal visitPostUnExpr(SimpleBCParser.PostUnExprContext ctx) {
-		String var = ctx.ID.getText();
+		String var = ctx.ID().getText();
 		BigDecimal originalValue = getOrCreate(var);
 		switch (ctx.op.getText()) {
 			case "++":
@@ -174,8 +185,8 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	// ID '=' expr
 	@Override
 	public BigDecimal visitVarDefExpr(SimpleBCParser.VarDefExprContext ctx) {
-		String var = ctx.varDef.ID.getText();
-		BigDecimal value = visit(ctx.varDef.expr);
+		String var = ctx.varDef().ID().getText();
+		BigDecimal value = visit(ctx.varDef().expr());
 		set(var, value);
 		return value;
 	}
@@ -183,7 +194,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	// '(' ... ')'
 	@Override
 	public BigDecimal visitParenExpr(SimpleBCParser.ParenExprContext ctx) {
-		return visit(ctx.e);
+		return visit(ctx.expr());
 	}
 
 	// '^', '*', '/', '+', '-', '&&', '||'
