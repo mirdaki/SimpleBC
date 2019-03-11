@@ -29,7 +29,7 @@ To run from the terminal:
 java -cp target/SimpleBC-1.0-jar-with-dependencies.jar com.codecaptured.SimpleBC.SimpleBC
 ```
 
-and press `ctrl+D` once done.
+Return and press `ctrl+D` once done to get the output.
 
 To run from a file:
 

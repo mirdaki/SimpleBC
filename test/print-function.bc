@@ -5,3 +5,4 @@ print "foo", 78 # Output foo78
 print 2+2, -4, 5/2-1 # Output 4-41.5
 print (2+2)^2, -1 # Output 16-1
 print 3.14, "pi", "day" # Output 3.14piday
+"1-9" # Output 1-9

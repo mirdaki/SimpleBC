@@ -1,15 +1,34 @@
 {
-	"version": "2.0.0",
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "SimpleBC",
-			"type": "antlr-debug",
+			"type": "java",
+			"name": "Debug (Launch) - Current File",
 			"request": "launch",
-			"input": "test/scratchpad.bc",
-			"grammar": "src/main/antlr4/com/codecaptured/SimpleBC/SimpleBC.g4",
-			"startRule": "exprList",
-			"printParseTree": true,
-			"visualParseTree": true
+			"mainClass": "${file}"
+		},
+		{
+			"type": "java",
+			"name": "Debug (Launch)-SimpleBC<SimpleBC>",
+			"request": "launch",
+			"mainClass": "com.codecaptured.SimpleBC.SimpleBC",
+			"projectName": "SimpleBC",
+			"console": "integratedTerminal"
+		},
+		{
+			"type": "java",
+			"name": "Debug (Launch)-Test",
+			"request": "launch",
+			"mainClass": "Test"
+		},
+		{
+			"type": "java",
+			"name": "Debug (Launch)-TestPropertyFileVisitor",
+			"request": "launch",
+			"mainClass": "TestPropertyFileVisitor"
 		}
 	]
 }
