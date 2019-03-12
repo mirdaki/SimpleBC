@@ -197,7 +197,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		return visit(ctx.expr());
 	}
 
-	// '^', '*', '/', '+', '-', '&&', '||'
+	// '^', '*', '/', '+', '-', '<', '<=', '>', '>=', '==', '!=', '&&', '||'
 	@Override
 	public BigDecimal visitBiExpr(SimpleBCParser.BiExprContext ctx) {
 		BigDecimal left = visit(ctx.el);
