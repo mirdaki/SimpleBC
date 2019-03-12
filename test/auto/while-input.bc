@@ -1,0 +1,4 @@
+while (!x) {x; ++x;}
+while (y) {y; ++y;}
+while (z) ++z;
+z=1; while (z) z--;

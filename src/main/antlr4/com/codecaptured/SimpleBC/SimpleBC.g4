@@ -51,8 +51,8 @@ expr
 	;
 
 parameters
-	: (ID ',')* ID #defineParameters
-	| (expr ',')* expr #declareParameters
+	: ((ID ',')* ID)? #defineParameters
+	| ((expr ',')* expr)? #declareParameters
 	;
 
 funcCall

@@ -1,0 +1,32 @@
+define a (x) {return (2*x);	}
+a(2)
+define b() {}
+b()
+define c(y, z) {
+	y+z
+}
+c(1,2)
+define d(x) {
+	x = x + 1
+	return(x)
+}
+d(5)
+define e(x) {
+	x = x + 1;
+	return
+}
+e(5)
+define f(){
+	return (x + 1)
+}
+define g(y){
+	auto x, z;
+	y = z + x
+	return f()
+}
+g(1)
+define h(j, k) {
+	print "hello";
+	if (!j) return (k) else return (h(--j, ++k));
+}
+h(5, 0)
