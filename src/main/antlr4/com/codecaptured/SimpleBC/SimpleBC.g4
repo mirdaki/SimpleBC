@@ -40,6 +40,7 @@ expr
 	| <assoc = right> el = expr op = '^' er = expr #biExpr
 	| el = expr op = ('*'|'/') er = expr #biExpr
 	| el = expr op = ('+'|'-') er = expr #biExpr
+	| el = expr op = ('<'|'<='|'>'|'>='|'=='|'!=') er = expr #biExpr
 	| op = '!' expr #unExpr
 	| el = expr op = '&&' er = expr #biExpr
 	| el = expr op = '||' er = expr #biExpr

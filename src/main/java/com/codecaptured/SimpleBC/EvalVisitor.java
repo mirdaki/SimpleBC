@@ -213,6 +213,42 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 				return left.add(right);
 			case "-":
 				return left.subtract(right);
+			case "<":
+				if (-1 == left.compareTo(right)) {
+					return BigDecimal.ONE;
+				} else {
+					return BigDecimal.ZERO;
+				}
+			case "<=":
+				if (-1 == left.compareTo(right) || 0 == left.compareTo(right)) {
+					return BigDecimal.ONE;
+				} else {
+					return BigDecimal.ZERO;
+				}
+			case ">":
+				if (1 == left.compareTo(right)) {
+					return BigDecimal.ONE;
+				} else {
+					return BigDecimal.ZERO;
+				}
+			case ">=":
+				if (1 == left.compareTo(right) || 0 == left.compareTo(right)) {
+					return BigDecimal.ONE;
+				} else {
+					return BigDecimal.ZERO;
+				}
+			case "==":
+				if (0 == left.compareTo(right)) {
+					return BigDecimal.ONE;
+				} else {
+					return BigDecimal.ZERO;
+				}
+			case "!=":
+				if (0 != left.compareTo(right)) {
+					return BigDecimal.ONE;
+				} else {
+					return BigDecimal.ZERO;
+				}
 			case "&&":
 				if (!left.equals(BigDecimal.ZERO) && !right.equals(BigDecimal.ZERO)) {
 					return BigDecimal.ONE;
