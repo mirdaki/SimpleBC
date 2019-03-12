@@ -5,12 +5,22 @@ prog: (stat? EXPR_END)*;
 
 stat
 	: varDef #varStat
+	| retrn #returnStat
 	| print #printStat
 	| expr #exprStat
+	| ifThen #ifStat
+	| whileLoop #whileStat
+	| forLoop #forStat
+	| funcDef #funcStat
 	;
 
 varDef
 	: ID '=' expr
+	;
+
+retrn
+	: 'return' #returnEmpty
+	| 'return' '(' expr ')' #returnValue
 	;
 
 print
@@ -36,12 +46,42 @@ expr
 	| varDef #varDefExpr
 	| FLOAT #floatExpr
 	| ID #varExpr
-	| func #funcExpr
+	| funcCall #funcCallExpr
 	| '(' expr ')' #parenExpr
 	;
 
-func
-	: ID '(' arg = expr ')'
+parameters
+	: (ID ',')* ID #defineParameters
+	| (expr ',')* expr #declareParameters
+	;
+
+funcCall
+	: ID '(' parameters ')'
+	;
+
+block
+	: '{' block '}'
+	| stat
+	;
+
+ifThen
+	: 'if' '(' expr ')' block ('else' block)?
+	;
+
+whileLoop
+	: 'while' '(' expr ')' block
+	;
+
+forLoop
+	: 'for' '(' expr ';' expr ';' expr ')' block
+	;
+
+funcDef
+	: 'define' ID '(' parameters ')' '{' (autoList ';')? block '}'
+	;
+
+autoList
+	: 'auto' (ID ',')* ID
 	;
 
 /* Lexer rules */

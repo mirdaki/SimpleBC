@@ -124,10 +124,10 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 
 	// Function ()
 	@Override
-	public BigDecimal visitFuncExpr(SimpleBCParser.FuncExprContext ctx) {
-		String funcName = ctx.func().ID().getText();
+	public BigDecimal visitFuncCallExpr(SimpleBCParser.FuncCallExprContext ctx) {
+		String funcName = ctx.funcCall().ID().getText();
 
-		BigDecimal arg = visit(ctx.func().expr());
+		BigDecimal arg = visit(ctx.funcCall().parameters());
 		return fnMap.get(funcName).execute(arg).setScale(scale, BigDecimal.ROUND_DOWN);
 	}
 
