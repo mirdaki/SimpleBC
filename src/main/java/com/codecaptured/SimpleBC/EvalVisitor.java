@@ -135,6 +135,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	@Override
 	public BigDecimal visitIfThen(SimpleBCParser.IfThenContext ctx) {
 		// Check if the expression is truth-y
+		String temp = visit(ctx.expr()).toString();
 		if (0 != BigDecimal.ZERO.compareTo(visit(ctx.expr()))) {
 			return visit(ctx.stat(0));
 		} else if (ctx.stat().size() > 1){

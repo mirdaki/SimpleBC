@@ -15,7 +15,7 @@ stat
 	| ifThen #ifStat
 	| whileLoop #whileStat
 	| forLoop #forStat
-	| funcDef END_LINE+ #funcStat
+	| funcDef #funcStat
 	;
 
 block
