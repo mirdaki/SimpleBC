@@ -1,7 +1,15 @@
 grammar SimpleBC;
 
 /* Parser rules */
-prog: (stat? EXPR_END)*;
+prog
+	: block EOF
+	;
+
+block
+	: '{' block '}'
+	// | (stat? EXPR_END)*
+	| (stat? END_LINE)*
+	;
 
 stat
 	: varDef #varStat
@@ -60,13 +68,9 @@ funcCall
 	: ID '(' parameters ')'
 	;
 
-block
-	: '{' block '}'
-	| stat
-	;
-
 ifThen
-	: 'if' '(' expr ')' block ('else' block)?
+	: ('if' '(' expr ')' block) ('else' 'if' expr block)* ('else' block)?
+	// | IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?
 	;
 
 whileLoop
@@ -77,6 +81,7 @@ forLoop
 	: 'for' '(' expr ';' expr ';' expr ')' block
 	;
 
+// May need to remive the semicolon from auto list and add it to the list of statments (same with for stuff)
 funcDef
 	: 'define' ID '(' parameters ')' '{' (autoList ';')? block '}'
 	;
@@ -89,8 +94,10 @@ autoList
 C_COMMENT: [/][*](. | [\r\n])*? [*][/] -> skip;
 ID: [_A-Za-z]+;
 FLOAT: [0-9]* [.]? [0-9]+;
-EXPR_END: LINE_END | [;] | [EOF] | P_COMMENT;
+END_LINE: (SEMI_COLON NEW_LINE+) | (P_COMMENT NEW_LINE+) | NEW_LINE+;
+// EXPR_END: P_COMMENT | SEMI_COLON | LINE_END | EOF;
 WS: [ \t]+ -> skip;
 
-fragment LINE_END: '\r'? '\n';
-fragment P_COMMENT: [#](.)*? LINE_END;
+fragment NEW_LINE: [\r\n] | [\n] | [\r];
+fragment P_COMMENT: [#](.)*?;
+fragment SEMI_COLON: [;];

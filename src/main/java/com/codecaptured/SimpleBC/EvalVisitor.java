@@ -131,6 +131,21 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		return fnMap.get(funcName).execute(arg).setScale(scale, BigDecimal.ROUND_DOWN);
 	}
 
+	// if ( expression ) statement1 [else statement2]
+	@Override
+	public BigDecimal visitIfThen(SimpleBCParser.IfThenContext ctx) {
+		// Check if the expression is truth-y
+		if (0 != BigDecimal.ZERO.compareTo(visit(ctx.expr()))) {
+			return visit(ctx.block(0));
+		} else if (ctx.block().size() > 1){
+			// The expression is false and there is an else block
+			return visit(ctx.block(1));
+		} else {
+			// No else block
+			return BigDecimal.ZERO;
+		}
+	}
+
 	// '++' ID, '--' ID
 	@Override
 	public BigDecimal visitPreUnExpr(SimpleBCParser.PreUnExprContext ctx) {

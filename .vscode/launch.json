@@ -6,12 +6,6 @@
 	"configurations": [
 		{
 			"type": "java",
-			"name": "Debug (Launch) - Current File",
-			"request": "launch",
-			"mainClass": "${file}"
-		},
-		{
-			"type": "java",
 			"name": "Debug (Launch)-SimpleBC<SimpleBC>",
 			"request": "launch",
 			"mainClass": "com.codecaptured.SimpleBC.SimpleBC",
@@ -19,16 +13,14 @@
 			"console": "integratedTerminal"
 		},
 		{
-			"type": "java",
-			"name": "Debug (Launch)-Test",
+			"name": "antlr4-bc",
+			"type": "antlr-debug",
 			"request": "launch",
-			"mainClass": "Test"
-		},
-		{
-			"type": "java",
-			"name": "Debug (Launch)-TestPropertyFileVisitor",
-			"request": "launch",
-			"mainClass": "TestPropertyFileVisitor"
-		}
+			"input": "test/scratchpad.bc",
+			"grammar": "src/main/antlr4/com/codecaptured/SimpleBC/SimpleBC.g4",
+			"startRule": "prog",
+			"printParseTree": false,
+			"visualParseTree": true
+	}
 	]
 }
