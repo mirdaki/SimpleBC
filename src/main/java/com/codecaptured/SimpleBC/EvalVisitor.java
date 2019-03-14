@@ -2,7 +2,9 @@ package com.codecaptured.SimpleBC;
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.ArrayDeque;
 import java.math.BigDecimal;
+import java.lang.RuntimeException;
 
 public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 
@@ -11,56 +13,116 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	// Input for functions
 	public static Scanner input = new Scanner(System.in);
 
-	// Define function interface and map
-	public interface Fn {
+	// Create environment
+	public static class Environment {
+		public HashMap<String, Function> functionMap;
+		public HashMap<String, BigDecimal> variableMap;
+
+		public Environment(HashMap<String, Function> functionMap, HashMap<String, BigDecimal> variableMap) {
+			this.functionMap = functionMap;
+			this.variableMap = variableMap;
+		}
+	}
+	public interface Function {
 		public BigDecimal execute(BigDecimal arg);
 	}
 
-	public static HashMap<String, Fn> fnMap = new HashMap<String, Fn>();
+	public static ArrayDeque<Environment> programEnvrioment = new ArrayDeque<Environment>();
 
-	// Default functions
-	static {
-		fnMap.put("sqrt", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sqrt(arg.doubleValue())); } });
-		fnMap.put("s", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sin(arg.doubleValue())); } });
-		fnMap.put("c", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.cos(arg.doubleValue())); } });
-		fnMap.put("l", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.log(arg.doubleValue())); } });
-		fnMap.put("e", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.exp(arg.doubleValue())); } });
-		fnMap.put("read", new Fn() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(input.nextLine().trim()); } });
+	// Methods for changing and accessing the program environment
+
+	public static void newScope() {
+		// Create the new maps and add them on top of the current scope
+		HashMap<String, Function> functionMap = new HashMap<String, Function>();
+		HashMap<String, BigDecimal> variableMap = new HashMap<String, BigDecimal>();
+		Environment temp = new Environment(functionMap, variableMap);
+		programEnvrioment.push(temp);
 	}
 
-	// Variable map
-	public static HashMap<String, BigDecimal> varMap = new HashMap<>();
-	public static BigDecimal getOrCreate(String id) {
-		if (id.equals("scale")) {
-			return new BigDecimal(scale);
+	public static void endScope() {
+		// Pop the scope only if it's not the global scope
+		if (programEnvrioment.size() > 1) {
+			programEnvrioment.pop();
 		}
-		if (varMap.containsKey(id)) {
-			return varMap.get(id);
-		}
-		else {
-			varMap.put(id, BigDecimal.ZERO);
+	}
+
+	public static BigDecimal getOrCreateVar(String id) {
+		// Check if it's in the current scope
+		if (programEnvrioment.getLast().variableMap.containsKey(id)) {
+			return programEnvrioment.getLast().variableMap.get(id);
+
+		// Check if it's in the global scope
+		} else if (programEnvrioment.getFirst().variableMap.containsKey(id)) {
+			return programEnvrioment.getFirst().variableMap.get(id);
+
+		// If neither, add it to the current scope as 0
+		} else {
+			programEnvrioment.getLast().variableMap.put(id, BigDecimal.ZERO);
 			return BigDecimal.ZERO;
 		}
 	}
 
-	public static void set(String id, BigDecimal value) {
-		//check that scale is not set to negative
-		if (id.equals("scale")) {
+	public static void setVar(String id, BigDecimal value) {
+		// Handle modifying scale (can't be negative)
+		if (id.equals("scale") && value.compareTo(BigDecimal.ZERO) == -1) {
+			System.out.println("Cannot set scale to negative value");
+			throw new RuntimeException("Function undefined");
+		}
+
+		// Add the variable to the current scope
+		programEnvrioment.getLast().variableMap.put(id, value);
+	}
+
+	public static Function getFunc(String id) {
+		// Check if it's in the current scope
+		if (programEnvrioment.getLast().functionMap.containsKey(id)) {
+			return programEnvrioment.getLast().functionMap.get(id);
+
+		// Check if it's in the global scope
+		} else if (programEnvrioment.getFirst().functionMap.containsKey(id)) {
+			return programEnvrioment.getFirst().functionMap.get(id);
+
+		// If neither, there is an error
+		} else {
+			System.out.println("Function undefined");
+			throw new RuntimeException("Function undefined");
+		}
+	}
+
+	public static void setFunc(/* String id, BigDecimal value */) {
+		// Handle modifying scale (always global)
+		/* if (id.equals("scale")) {
 			if (value.compareTo(BigDecimal.ZERO) == -1) {
 				System.out.println("Cannot set scale to negative value");
 				System.exit(-1);
 			}
 			scale = value.intValue();
 		}
-		varMap.put(id, value);
+
+		// Add the variable to the current scope
+		programEnvrioment.getLast().variableMap.put(id, value); */
 	}
 
-	// Special variable
-	static int scale = 20;
-
-	// Default variables
+	// Create the global scope
 	static {
-		varMap.put("last", BigDecimal.ZERO);
+		// Global function and variable map
+		HashMap<String, Function> globalFunctionMap = new HashMap<String, Function>();
+		HashMap<String, BigDecimal> globalVariableMap = new HashMap<String, BigDecimal>();
+
+		// Functions
+		globalFunctionMap.put("sqrt", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sqrt(arg.doubleValue())); } });
+		globalFunctionMap.put("s", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sin(arg.doubleValue())); } });
+		globalFunctionMap.put("c", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.cos(arg.doubleValue())); } });
+		globalFunctionMap.put("l", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.log(arg.doubleValue())); } });
+		globalFunctionMap.put("e", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.exp(arg.doubleValue())); } });
+		globalFunctionMap.put("read", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(input.nextLine().trim()); } });
+
+		// Variables
+		globalVariableMap.put("last", BigDecimal.ZERO);
+		globalVariableMap.put("scale", new BigDecimal(20));
+
+		// Add global scope to stack
+		programEnvrioment.push(new Environment(globalFunctionMap, globalVariableMap));
 	}
 
 	/* Visitors */
@@ -70,14 +132,14 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	public BigDecimal visitVarStat(SimpleBCParser.VarStatContext ctx) {
 		String var = ctx.varDef().ID().getText();
 		BigDecimal value = visit(ctx.varDef().expr());
-		set(var, value);
+		setVar(var, value);
 		return value;
 	}
 
 	@Override
 	public BigDecimal visitExprStat(SimpleBCParser.ExprStatContext ctx) {
 		BigDecimal result = visit(ctx.expr());
-		set("last", result);
+		setVar("last", result);
 		System.out.println(result);
 		return result;
 	}
@@ -119,7 +181,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	// ID
 	@Override
 	public BigDecimal visitVarExpr(SimpleBCParser.VarExprContext ctx) {
-		return getOrCreate(ctx.ID().getText());
+		return getOrCreateVar(ctx.ID().getText());
 	}
 
 	// Function ()
@@ -127,8 +189,9 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	public BigDecimal visitFuncCallExpr(SimpleBCParser.FuncCallExprContext ctx) {
 		String funcName = ctx.funcCall().ID().getText();
 
+		// Make the new scope
 		BigDecimal arg = visit(ctx.funcCall().parameters());
-		return fnMap.get(funcName).execute(arg).setScale(scale, BigDecimal.ROUND_DOWN);
+		return getFunc(funcName).execute(arg).setScale(getOrCreateVar("scale").intValueExact(), BigDecimal.ROUND_DOWN);
 	}
 
 	// if ( expression ) statement1 [else statement2]
@@ -181,13 +244,13 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	@Override
 	public BigDecimal visitPreUnExpr(SimpleBCParser.PreUnExprContext ctx) {
 		String var = ctx.ID().getText();
-		BigDecimal originalValue = getOrCreate(var);
+		BigDecimal originalValue = getOrCreateVar(var);
 		switch (ctx.op.getText()) {
 			case "++":
-				varMap.put(var, originalValue.add(BigDecimal.ONE));
+				setVar(var, originalValue.add(BigDecimal.ONE));
 				return originalValue.add(BigDecimal.ONE);
 			case "--":
-				varMap.put(var, originalValue.subtract(BigDecimal.ONE));
+				setVar(var, originalValue.subtract(BigDecimal.ONE));
 				return originalValue.subtract(BigDecimal.ONE);
 			default:
 				return BigDecimal.ZERO;
@@ -215,13 +278,13 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	@Override
 	public BigDecimal visitPostUnExpr(SimpleBCParser.PostUnExprContext ctx) {
 		String var = ctx.ID().getText();
-		BigDecimal originalValue = getOrCreate(var);
+		BigDecimal originalValue = getOrCreateVar(var);
 		switch (ctx.op.getText()) {
 			case "++":
-				varMap.put(var, originalValue.add(BigDecimal.ONE));
+				setVar(var, originalValue.add(BigDecimal.ONE));
 				return originalValue;
 			case "--":
-				varMap.put(var, originalValue.subtract(BigDecimal.ONE));
+				setVar(var, originalValue.subtract(BigDecimal.ONE));
 				return originalValue;
 			default:
 				return BigDecimal.ZERO;
@@ -233,7 +296,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	public BigDecimal visitVarDefExpr(SimpleBCParser.VarDefExprContext ctx) {
 		String var = ctx.varDef().ID().getText();
 		BigDecimal value = visit(ctx.varDef().expr());
-		set(var, value);
+		setVar(var, value);
 		return value;
 	}
 
@@ -254,7 +317,7 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 			case "*":
 				return left.multiply(right);
 			case "/":
-				return left.divide(right, scale, BigDecimal.ROUND_DOWN);
+				return left.divide(right, getOrCreateVar("scale").intValueExact(), BigDecimal.ROUND_DOWN);
 			case "+":
 				return left.add(right);
 			case "-":
