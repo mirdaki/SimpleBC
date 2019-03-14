@@ -2,24 +2,28 @@ grammar SimpleBC;
 
 /* Parser rules */
 prog
-	: block EOF
-	;
-
-block
-	: '{' block '}'
-	// | (stat? EXPR_END)*
-	| (stat? END_LINE)*
+	: stat* EOF
 	;
 
 stat
-	: varDef #varStat
-	| retrn #returnStat
-	| print #printStat
-	| expr #exprStat
+	: END_LINE #endLineStat
+	| block #blockStat
+	| varDef END_LINE+ #varStat
+	| retrn END_LINE+ #returnStat
+	| print END_LINE+ #printStat
+	| expr END_LINE+ #exprStat
 	| ifThen #ifStat
 	| whileLoop #whileStat
 	| forLoop #forStat
-	| funcDef #funcStat
+	| funcDef END_LINE+ #funcStat
+	;
+
+block
+	: '{' statList? '}'
+	;
+
+statList
+	: stat+
 	;
 
 varDef
@@ -69,21 +73,21 @@ funcCall
 	;
 
 ifThen
-	: ('if' '(' expr ')' block) ('else' 'if' expr block)* ('else' block)?
+	: 'if' '(' expr ')' stat ('else' stat)?
 	// | IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?
 	;
 
 whileLoop
-	: 'while' '(' expr ')' block
+	: 'while' '(' expr ')' stat
 	;
 
 forLoop
-	: 'for' '(' expr ';' expr ';' expr ')' block
+	: 'for' '(' expr ';' expr ';' expr ')' stat
 	;
 
 // May need to remive the semicolon from auto list and add it to the list of statments (same with for stuff)
 funcDef
-	: 'define' ID '(' parameters ')' '{' (autoList ';')? block '}'
+	: 'define' ID '(' parameters ')' '{' (autoList ';')? stat '}'
 	;
 
 autoList
@@ -91,13 +95,15 @@ autoList
 	;
 
 /* Lexer rules */
+P_COMMENT: [#] ~([\r\n])* -> skip;
 C_COMMENT: [/][*](. | [\r\n])*? [*][/] -> skip;
-ID: [_A-Za-z]+;
-FLOAT: [0-9]* [.]? [0-9]+;
-END_LINE: (SEMI_COLON NEW_LINE+) | (P_COMMENT NEW_LINE+) | NEW_LINE+;
-// EXPR_END: P_COMMENT | SEMI_COLON | LINE_END | EOF;
 WS: [ \t]+ -> skip;
 
+END_LINE: (SEMI_COLON NEW_LINE*) | NEW_LINE+;
+ID: [_A-Za-z]+;
+FLOAT: [0-9]* [.]? [0-9]+;
+
+// EXPR_END: P_COMMENT | SEMI_COLON | LINE_END | EOF;
+
 fragment NEW_LINE: [\r\n] | [\n] | [\r];
-fragment P_COMMENT: [#](.)*?;
 fragment SEMI_COLON: [;];

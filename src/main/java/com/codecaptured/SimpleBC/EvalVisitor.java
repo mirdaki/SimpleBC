@@ -136,10 +136,10 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	public BigDecimal visitIfThen(SimpleBCParser.IfThenContext ctx) {
 		// Check if the expression is truth-y
 		if (0 != BigDecimal.ZERO.compareTo(visit(ctx.expr()))) {
-			return visit(ctx.block(0));
-		} else if (ctx.block().size() > 1){
+			return visit(ctx.stat(0));
+		} else if (ctx.stat().size() > 1){
 			// The expression is false and there is an else block
-			return visit(ctx.block(1));
+			return visit(ctx.stat(1));
 		} else {
 			// No else block
 			return BigDecimal.ZERO;
