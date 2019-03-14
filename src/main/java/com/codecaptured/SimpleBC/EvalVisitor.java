@@ -135,7 +135,6 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	@Override
 	public BigDecimal visitIfThen(SimpleBCParser.IfThenContext ctx) {
 		// Check if the expression is truth-y
-		String temp = visit(ctx.expr()).toString();
 		if (0 != BigDecimal.ZERO.compareTo(visit(ctx.expr()))) {
 			return visit(ctx.stat(0));
 		} else if (ctx.stat().size() > 1){
@@ -145,6 +144,37 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 			// No else block
 			return BigDecimal.ZERO;
 		}
+	}
+
+	//  while ( expression ) statement
+	@Override
+	public BigDecimal visitWhileLoop(SimpleBCParser.WhileLoopContext ctx) {
+		// Check of the statement is truth-y
+		while(0 != BigDecimal.ZERO.compareTo(visit(ctx.expr()))) {
+			// Run the block
+			visit(ctx.stat());
+		}
+		return BigDecimal.ZERO;
+	}
+
+	// for ( [expression1] ; [expression2] ; [expression3] ) statement
+	@Override
+	public BigDecimal visitForLoop(SimpleBCParser.ForLoopContext ctx) {
+		// Run the for loop expressions
+		for (
+			visit(ctx.expr(0));
+			0 != BigDecimal.ZERO.compareTo(visit(ctx.expr(1)));
+			visit(ctx.expr(2))) {
+				// Run the block
+				visit(ctx.stat());
+		}
+		return BigDecimal.ZERO;
+	}
+
+	// define name ( parameters ) { newline auto_list statement_list }
+	@Override
+	public BigDecimal visitFuncStat(SimpleBCParser.FuncStatContext ctx) {
+		return visitChildren(ctx);
 	}
 
 	// '++' ID, '--' ID
