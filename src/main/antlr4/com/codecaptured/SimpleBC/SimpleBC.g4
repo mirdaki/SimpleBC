@@ -2,16 +2,16 @@ grammar SimpleBC;
 
 /* Parser rules */
 prog
-	: stat* EOF
+	: statList* EOF
 	;
 
 stat
 	: END_LINE #endLineStat
-	| block #blockStat
-	| varDef END_LINE+ #varStat
-	| retrn END_LINE+ #returnStat
-	| print END_LINE+ #printStat
-	| expr END_LINE+ #exprStat
+	/* | block #blockStat */
+	| varDef #varStat
+	| retrn #returnStat
+	| print #printStat
+	| expr #exprStat
 	| ifThen #ifStat
 	| whileLoop #whileStat
 	| forLoop #forStat
@@ -20,10 +20,11 @@ stat
 
 block
 	: '{' statList? '}'
+	| stat
 	;
 
 statList
-	: stat+
+	: (stat END_LINE)+
 	;
 
 varDef
