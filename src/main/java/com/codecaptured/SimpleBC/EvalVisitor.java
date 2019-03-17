@@ -2,16 +2,61 @@ package com.codecaptured.SimpleBC;
 
 import java.util.HashMap;
 import java.util.Scanner;
+
 import java.util.ArrayDeque;
 import java.math.BigDecimal;
 import java.lang.RuntimeException;
 
-public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
+public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 
 	/* Utilities and environment */
 
 	// Input for functions
 	public static Scanner input = new Scanner(System.in);
+
+	// Create function class
+	public class Function {
+		public SimpleBCParser.ParametersContext parameters;
+		public SimpleBCParser.StatListContext body;
+		public SimpleBCParser.AutoListContext autoVariables;
+
+		public Function(SimpleBCParser.ParametersContext parameters, SimpleBCParser.StatListContext body, SimpleBCParser.AutoListContext autoVariables) {
+			this.parameters = parameters;
+			this.body = body;
+			this.autoVariables = autoVariables;
+		}
+
+		public BigDecimal execute(SimpleBCParser.ArgumentsContext args) {
+			// New scope
+			newScope();
+
+			// Add any arguments to the new scope
+			for (int i = 0; i < parameters.ID().size(); ++i){
+				setVar(parameters.ID(i).toString(), visit(args.expr(i)));
+			}
+
+			// Add scope specific variables
+			if (null != autoVariables) {
+				for (int i = 0; i < autoVariables.ID().size(); ++i) {
+					setVar(autoVariables.ID(i).toString(), BigDecimal.ZERO);
+				}
+			}
+
+			// Run the function
+			BigDecimal result = BigDecimal.ZERO;
+			if (body != null) {
+				result = visit(body);
+			}
+
+			String test = result.toString();
+
+			// Remove the new scope
+			endScope();
+
+			// Return value
+			return result.setScale(getOrCreateVar("scale").intValueExact(), BigDecimal.ROUND_DOWN);
+		}
+	}
 
 	// Create environment
 	public static class Environment {
@@ -22,9 +67,6 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 			this.functionMap = functionMap;
 			this.variableMap = variableMap;
 		}
-	}
-	public interface Function {
-		public BigDecimal execute(BigDecimal arg);
 	}
 
 	public static ArrayDeque<Environment> programEnvrioment = new ArrayDeque<Environment>();
@@ -74,6 +116,8 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 	}
 
 	public static Function getFunc(String id) {
+		// Check if it's a default
+
 		// Check if it's in the current scope
 		if (programEnvrioment.getLast().functionMap.containsKey(id)) {
 			return programEnvrioment.getLast().functionMap.get(id);
@@ -89,18 +133,9 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		}
 	}
 
-	public static void setFunc(/* String id, BigDecimal value */) {
-		// Handle modifying scale (always global)
-		/* if (id.equals("scale")) {
-			if (value.compareTo(BigDecimal.ZERO) == -1) {
-				System.out.println("Cannot set scale to negative value");
-				System.exit(-1);
-			}
-			scale = value.intValue();
-		}
-
-		// Add the variable to the current scope
-		programEnvrioment.getLast().variableMap.put(id, value); */
+	public static void setFunc(String id, Function function) {
+		// Add the function to the current scope
+		programEnvrioment.getLast().functionMap.put(id, function);
 	}
 
 	// Create the global scope
@@ -109,25 +144,28 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		HashMap<String, Function> globalFunctionMap = new HashMap<String, Function>();
 		HashMap<String, BigDecimal> globalVariableMap = new HashMap<String, BigDecimal>();
 
-		// Functions
-		globalFunctionMap.put("sqrt", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sqrt(arg.doubleValue())); } });
-		globalFunctionMap.put("s", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.sin(arg.doubleValue())); } });
-		globalFunctionMap.put("c", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.cos(arg.doubleValue())); } });
-		globalFunctionMap.put("l", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.log(arg.doubleValue())); } });
-		globalFunctionMap.put("e", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(Math.exp(arg.doubleValue())); } });
-		globalFunctionMap.put("read", new Function() { public BigDecimal execute(BigDecimal arg) { return new BigDecimal(input.nextLine().trim()); } });
-
-		// Variables
-		globalVariableMap.put("last", BigDecimal.ZERO);
-		globalVariableMap.put("scale", new BigDecimal(20));
-
 		// Add global scope to stack
 		programEnvrioment.push(new Environment(globalFunctionMap, globalVariableMap));
+
+		// Set default variables
+		setVar("last", BigDecimal.ZERO);
+		setVar("scale", new BigDecimal(20));
 	}
 
 	/* Visitors */
 
 	// Statements (modify state or do something)
+	@Override
+	public BigDecimal visitStatList(SimpleBCParser.StatListContext ctx) {
+		BigDecimal result = visitChildren(ctx);
+
+		if (ctx.getChild(ctx.getChildCount() - 1) instanceof SimpleBCParser.ReturnStatContext == false) {
+			result = BigDecimal.ZERO;
+		}
+		String test = result.toString();
+		return result;
+	}
+
 	@Override
 	public BigDecimal visitVarStat(SimpleBCParser.VarStatContext ctx) {
 		String var = ctx.varDef().ID().getText();
@@ -142,6 +180,20 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		setVar("last", result);
 		System.out.println(result);
 		return result;
+	}
+
+	// return
+	@Override
+	public BigDecimal visitReturnEmpty(SimpleBCParser.ReturnEmptyContext ctx) {
+		return BigDecimal.ZERO;
+	}
+
+	// return (expr)
+	@Override
+	public BigDecimal visitReturnValue(SimpleBCParser.ReturnValueContext ctx) {
+		BigDecimal debugResult = visit(ctx.expr());
+		String test = debugResult.toString();
+		return debugResult;
 	}
 
 	// Print Statements
@@ -184,14 +236,39 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		return getOrCreateVar(ctx.ID().getText());
 	}
 
-	// Function ()
+	// function()
 	@Override
-	public BigDecimal visitFuncCallExpr(SimpleBCParser.FuncCallExprContext ctx) {
-		String funcName = ctx.funcCall().ID().getText();
+	public BigDecimal visitFuncCall(SimpleBCParser.FuncCallContext ctx) {
+		// Value for the default function calls, which will be used to easily scale the value below
+		Double defaultValue = 0.0;
 
-		// Make the new scope
-		BigDecimal arg = visit(ctx.funcCall().parameters());
-		return getFunc(funcName).execute(arg).setScale(getOrCreateVar("scale").intValueExact(), BigDecimal.ROUND_DOWN);
+		// Look through all of the default functions that aren't defined by the user (in bc)
+		switch (ctx.ID().toString()) {
+			case "sqrt":
+				defaultValue = Math.sqrt(visit(ctx.arguments().expr(0)).doubleValue());
+				break;
+			case "s":
+				defaultValue = Math.sin(visit(ctx.arguments().expr(0)).doubleValue());
+				break;
+			case "c":
+				defaultValue = Math.cos(visit(ctx.arguments().expr(0)).doubleValue());
+				break;
+			case "l":
+				defaultValue = Math.log(visit(ctx.arguments().expr(0)).doubleValue());
+				break;
+			case "e":
+				defaultValue = Math.exp(visit(ctx.arguments().expr(0)).doubleValue());
+				break;
+			case "read":
+				defaultValue = Double.parseDouble(input.nextLine().trim());
+			// Now for user defined functions
+			default:
+				return getFunc(ctx.ID().getText()).execute(ctx.arguments());
+		}
+
+		// The defaults aren't scaled properly like the user function is in execute
+		BigDecimal result = new BigDecimal(defaultValue);
+		return result.setScale(getOrCreateVar("scale").intValueExact(), BigDecimal.ROUND_DOWN);
 	}
 
 	// if ( expression ) statement1 [else statement2]
@@ -234,11 +311,11 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 		return BigDecimal.ZERO;
 	}
 
-	// define name ( parameters ) { newline auto_list statement_list }
+/* 	// define name ( parameters ) { newline auto_list statement_list }
 	@Override
 	public BigDecimal visitFuncStat(SimpleBCParser.FuncStatContext ctx) {
 		return visitChildren(ctx);
-	}
+	} */
 
 	// '++' ID, '--' ID
 	@Override
@@ -374,4 +451,14 @@ public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 				return BigDecimal.ZERO;
 		}
 	}
+
+	// define name ( parameters ) { newline auto_list statement_list }
+	@Override
+	public BigDecimal visitFuncDef(SimpleBCParser.FuncDefContext ctx) {
+		Function newFunc = new Function(ctx.parameters(), ctx.statList(), ctx.autoList());
+		setFunc(ctx.ID().getText(), newFunc);
+		return BigDecimal.ZERO;
+	}
+
+
 }

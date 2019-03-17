@@ -32,7 +32,7 @@ varDef
 
 retrn
 	: 'return' #returnEmpty
-	| 'return' '(' expr ')' #returnValue
+	| 'return' ('(' expr ')'| expr) #returnValue
 	;
 
 print
@@ -64,12 +64,15 @@ expr
 	;
 
 parameters
-	: ((ID ',')* ID)? #defineParameters
-	| ((expr ',')* expr)? #declareParameters
+	: ((ID ',')* ID)?
+	;
+
+arguments
+	: ((expr ',')* expr)?
 	;
 
 funcCall
-	: ID '(' parameters ')'
+	: ID '(' arguments ')'
 	;
 
 ifThen
@@ -87,11 +90,11 @@ forLoop
 
 // May need to remive the semicolon from auto list and add it to the list of statments (same with for stuff)
 funcDef
-	: 'define' ID '(' parameters ')' '{' (autoList ';')? stat '}'
+	: 'define' ID '(' parameters ')' '{' (autoList)? statList? '}'
 	;
 
 autoList
-	: 'auto' (ID ',')* ID
+	: NEW_LINE* 'auto' (ID ',')* ID ';'?
 	;
 
 /* Lexer rules */
@@ -103,7 +106,5 @@ END_LINE: (SEMI_COLON NEW_LINE*) | NEW_LINE+;
 ID: [_A-Za-z]+;
 FLOAT: [0-9]* [.]? [0-9]+;
 
-// EXPR_END: P_COMMENT | SEMI_COLON | LINE_END | EOF;
-
-fragment NEW_LINE: [\r\n] | [\n] | [\r];
+NEW_LINE: [\r\n] | [\n] | [\r];
 fragment SEMI_COLON: [;];

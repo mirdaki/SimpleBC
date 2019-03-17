@@ -1,40 +1,51 @@
-scale = 20
-
-/* Uses the fact that e^x = (e^(x/2))^2
-   When x is small enough, we use the series:
-     e^x = 1 + x + x^2/2! + x^3/3! + ...
-*/
-
-define e(x) {
-  auto  a, d, e, f, i, m, v, z
-
-  /* Check the sign of x. */
-  if (x<0) {
-    m = 1
-    x = -x
-  }
-
-  /* Precondition x. */
-  z = scale;
-  scale = 4 + z + .44*x;
-  while (x > 1) {
-    f += 1;
-    x /= 2;
-  }
-
-  /* Initialize the variables. */
-  v = 1+x
-  a = x
-  d = 1
-
-  for (i=2; 1; i++) {
-    e = (a *= x) / (d *= i)
-    if (e == 0) {
-      if (f>0) while (f--)  v = v*v;
-      scale = z
-      if (m) return (1/v);
-      return (v/1);
-    }
-    v += e
-  }
+define aTest (x) {
+	return (2*x);
 }
+aTest(2)
+
+define bTest() {}
+bTest()
+
+define cTest(y, z) {
+	y+z
+}
+cTest(1,2)
+
+define dTest(x) {
+	x = x + 1
+	return(x)
+}
+dTest(5)
+
+define eTest(x) {
+	x = x + 1;
+	return
+}
+eTest(5)
+
+define fTest(){
+	return (1)
+}
+
+define gTest(y){
+	y = 1 + 4;
+	return (fTest())
+}
+gTest(2)
+
+/*define hTest(j, k) {
+	print "hello";
+	if (!j) {
+		return (k)
+	} else return (hTest(--j, ++k));
+}
+hTest(5, 0)*/
+
+define fTest(x) {
+	if (x <= 1) {
+		return (1);
+	}
+	return (fTest(x-1) * x);
+}
+
+fTest(13)
