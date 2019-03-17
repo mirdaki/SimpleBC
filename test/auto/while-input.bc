@@ -12,3 +12,29 @@ while (z) ++z;
 
 z=1;
 while (z) z--;
+
+f = 5;
+while(f != 0) {
+	f = f -1;
+	print "hello"
+}
+
+y = 0;
+while (y <= 5) {
+	++y;
+	continue;
+	break;
+	y = 3;
+	y;
+}
+
+q = 0;
+t = 5;
+while (q != t){
+	q++
+}
+
+while (q != t){
+	break;
+	print "nope"
+}

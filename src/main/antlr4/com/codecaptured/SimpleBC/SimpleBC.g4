@@ -10,6 +10,8 @@ stat
 	| block #blockStat
 	| varDef END_LINE+ #varStat
 	| retrn END_LINE+ #returnStat
+	| contine END_LINE #continueStat
+	| brek END_LINE #breakStat
 	| print END_LINE+ #printStat
 	| expr END_LINE+ #exprStat
 	| ifThen #ifStat
@@ -33,6 +35,14 @@ varDef
 retrn
 	: 'return' #returnEmpty
 	| 'return' ('(' expr ')'| expr) #returnValue
+	;
+
+contine
+	: 'continue'
+	;
+
+brek
+	: 'break'
 	;
 
 print

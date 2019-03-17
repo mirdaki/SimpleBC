@@ -11,10 +11,13 @@ import com.codecaptured.SimpleBC.SimpleBCParser.FuncCallContext;
 
 public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 
+	// Function and return tracking related stuff
 	static HashMap<Integer, Integer> functionBodyMap = new HashMap<Integer, Integer>();
 	static HashMap<Integer, Integer> returnMap = new HashMap<Integer, Integer>();
-
 	static boolean wasFuncCall = false;
+
+	// Continue stuff
+	// static boolean lastWasContinue = false;
 
 	@Override
 	protected boolean shouldVisitNextChild(RuleNode node, T currentResult) {
@@ -59,6 +62,14 @@ public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 			System.out.println("BiExprContext");
 		} else if (node.getRuleContext() instanceof SimpleBCParser.ParenExprContext) {
 			System.out.println("ParenExprContext");
+		} else if (node.getRuleContext() instanceof SimpleBCParser.ContineContext) {
+			System.out.println("ContineContext");
+		} else if (node.getRuleContext() instanceof SimpleBCParser.ContinueStatContext) {
+			System.out.println("ContinueStatContext");
+		} else if (node.getRuleContext() instanceof SimpleBCParser.BiExprContext) {
+			System.out.println("BiExprContext");
+		} else if (node.getRuleContext() instanceof SimpleBCParser.ParenExprContext) {
+			System.out.println("ParenExprContext");
 		} else {
 			System.out.println("OTHER");
 		}
@@ -66,6 +77,8 @@ public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 		if (node.getParent() != null) {
 			System.out.println("Parent: " + node.getParent().hashCode() + " has " + node.getParent().getText());
 		} */
+
+		// Function return stuff
 
 		// If funCall == ret, next fails
 		if (node.getParent() != null) {
@@ -98,6 +111,18 @@ public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 			wasFuncCall = true;
 			// System.out.println("That was a function");
 		}
+
+		// Continue stuff
+		/* if (lastWasContinue) {
+			System.out.println("Skipping because of continue");
+			lastWasContinue = false;
+			return false;
+		}
+
+		if (node.getRuleContext() instanceof SimpleBCParser.ContinueStatContext) {
+			System.out.println("That was a continue");
+			lastWasContinue = true;
+		} */
 
 		return true;
 	}
