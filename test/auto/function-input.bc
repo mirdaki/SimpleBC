@@ -24,7 +24,7 @@ define eTest(x) {
 eTest(5)
 
 define fTest(){
-	return (1)
+	return (y)
 }
 
 define gTest(y){

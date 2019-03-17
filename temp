@@ -1,0 +1,1210 @@
+At 1450821318 of: [], 0..42, 4
+OTHER
+At 668849042 of: [34], 0..34, 1
+FuncStatContext
+Parent: 1450821318 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+
+fTest(13)
+
+
+
+
+
+<EOF>
+Don't continue on 1450821318 if 0 = 0 unless both are 0
+Child result is: 0
+Child result is: 0
+At 1450821318 of: [], 0..42, 4
+OTHER
+At 1689843956 of: [34], 35..35, 1
+OTHER
+Parent: 1450821318 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+
+fTest(13)
+
+
+
+
+
+<EOF>
+Don't continue on 1450821318 if 0 = 0 unless both are 0
+Child result is NULL
+Child result is NULL
+At 1450821318 of: [], 0..42, 4
+OTHER
+At 766572210 of: [62 34], 36..39, 1
+FuncCallExprContext
+Parent: 1020391880 has fTest(13)
+
+
+
+
+
+
+Don't continue on 1020391880 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 1 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 1 = 0 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 1 = 0 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 1 = 0 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 1 = 0 unless both are 0
+Return Stack incremented to 1 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 12
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 2 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 2 = 1 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 2 = 1 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 2 = 1 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 2 = 1 unless both are 0
+Return Stack incremented to 2 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 11
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 3 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 3 = 2 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 3 = 2 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 3 = 2 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 3 = 2 unless both are 0
+Return Stack incremented to 3 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 10
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 4 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 4 = 3 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 4 = 3 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 4 = 3 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 4 = 3 unless both are 0
+Return Stack incremented to 4 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 9
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 5 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 5 = 4 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 5 = 4 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 5 = 4 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 5 = 4 unless both are 0
+Return Stack incremented to 5 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 8
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 6 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 6 = 5 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 6 = 5 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 6 = 5 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 6 = 5 unless both are 0
+Return Stack incremented to 6 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 7
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 7 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 7 = 6 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 7 = 6 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 7 = 6 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 7 = 6 unless both are 0
+Return Stack incremented to 7 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 6
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 8 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 8 = 7 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 8 = 7 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 8 = 7 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 8 = 7 unless both are 0
+Return Stack incremented to 8 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 5
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 9 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 9 = 8 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 9 = 8 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 9 = 8 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 9 = 8 unless both are 0
+Return Stack incremented to 9 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 4
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 10 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 10 = 9 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 10 = 9 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 10 = 9 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 10 = 9 unless both are 0
+Return Stack incremented to 10 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 3
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 11 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 11 = 10 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 11 = 10 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 11 = 10 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 11 = 10 unless both are 0
+Return Stack incremented to 11 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 2
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 12 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 12 = 11 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 12 = 11 unless both are 0
+Not less than or equal
+Child result is: 0
+Child result is: 0
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1830712962 of: [80 223 71 34], 21..21, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 12 = 11 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 1112280004 of: [80 223 71 34], 22..33, 2
+ReturnStatContext
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 12 = 11 unless both are 0
+Return Stack incremented to 12 for 977993101
+At 1013423070 of: [16 92 50 80 223 71 34], 24..29, 1
+FuncCallExprContext
+Parent: 380936215 has fTest(x-1)*x
+Don't continue on 380936215 if 0 = 0 unless both are 0
+That was a function
+Function call for: fTest
+Subtracted to get: 1
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+Function Stack incremented to 13 for 977993101
+At 859417998 of: [80 223 71 34], 6..6, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 13 = 12 unless both are 0
+Child result is NULL
+Child result is NULL
+At 977993101 of: [223 71 34], 6..33, 4
+StatListContext
+Parent: 429313384 has definefTest(x){
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+}
+Don't continue on 429313384 if 0 = 0 unless both are 0
+At 5592464 of: [80 223 71 34], 7..20, 1
+OTHER
+Parent: 977993101 has 
+if(x<=1){
+return(1);
+}
+return(fTest(x-1)*x);
+
+Don't continue on 977993101 if 13 = 12 unless both are 0
+Less than or equal
+I've hit true
+At 142638629 of: [193 68 80 223 71 34], 13..20, 1
+BlockStatContext
+Parent: 707806938 has if(x<=1){
+return(1);
+}
+Don't continue on 707806938 if 0 = 0 unless both are 0
+At 705265961 of: [43 193 68 80 223 71 34], 13..20, 3
+BlockContext
+Parent: 142638629 has {
+return(1);
+}
+Don't continue on 142638629 if 0 = 0 unless both are 0
+Child result is NULL
+At 705265961 of: [43 193 68 80 223 71 34], 13..20, 3
+BlockContext
+Parent: 142638629 has {
+return(1);
+}
+Don't continue on 142638629 if 0 = 0 unless both are 0
+At 428746855 of: [75 43 193 68 80 223 71 34], 14..19, 2
+StatListContext
+Parent: 705265961 has {
+return(1);
+}
+Don't continue on 705265961 if 0 = 0 unless both are 0
+At 317983781 of: [80 75 43 193 68 80 223 71 34], 14..14, 1
+OTHER
+Parent: 428746855 has 
+return(1);
+
+Don't continue on 428746855 if 0 = 0 unless both are 0
+Child result is NULL
+Child result is NULL
+At 428746855 of: [75 43 193 68 80 223 71 34], 14..19, 2
+StatListContext
+Parent: 705265961 has {
+return(1);
+}
+Don't continue on 705265961 if 0 = 0 unless both are 0
+At 987405879 of: [80 75 43 193 68 80 223 71 34], 15..19, 2
+ReturnStatContext
+Parent: 428746855 has 
+return(1);
+
+Don't continue on 428746855 if 0 = 0 unless both are 0
+Return Stack incremented to 1 for 428746855
+Child result is: 1
+At 987405879 of: [80 75 43 193 68 80 223 71 34], 15..19, 2
+ReturnStatContext
+Parent: 428746855 has 
+return(1);
+
+Don't continue on 428746855 if 0 = 1 unless both are 0
+Return Stack incremented to 2 for 428746855
+Child result is NULL
+Child result is NULL
+Stat list result is null
