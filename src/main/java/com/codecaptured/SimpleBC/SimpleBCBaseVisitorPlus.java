@@ -14,16 +14,12 @@ public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 	static HashMap<Integer, Integer> functionBodyMap = new HashMap<Integer, Integer>();
 	static HashMap<Integer, Integer> returnMap = new HashMap<Integer, Integer>();
 
-	static int functionBodyCount = 0;
-	static int returnCount = 0;
-
 	static boolean wasFuncCall = false;
-	static boolean wasReturn = false;
 
 	@Override
 	protected boolean shouldVisitNextChild(RuleNode node, T currentResult) {
 
-		System.out.println("At " + node.hashCode() + " of: " + node.getRuleContext().toString() + ", " + node.getSourceInterval() + ", " + node.getChildCount());
+		/* System.out.println("At " + node.hashCode() + " of: " + node.getRuleContext().toString() + ", " + node.getSourceInterval() + ", " + node.getChildCount());
 
 		if (node.getRuleContext() instanceof SimpleBCParser.StatListContext) {
 			System.out.println("StatListContext");
@@ -69,58 +65,39 @@ public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 
 		if (node.getParent() != null) {
 			System.out.println("Parent: " + node.getParent().hashCode() + " has " + node.getParent().getText());
-		}
+		} */
 
 		// If funCall == ret, next fails
 		if (node.getParent() != null) {
 			int fu = functionBodyMap.getOrDefault(node.getParent().hashCode(), 0);
 			int re = returnMap.getOrDefault(node.getParent().hashCode(), 0);
-/* 			int fu = functionBodyCount;
-			int re = returnCount; */
-			System.out.println("Don't continue on " + node.getParent().hashCode() + " if " + fu + " = " + re + " unless both are 0");
+			// System.out.println("Don't continue on " + node.getParent().hashCode() + " if " + fu + " = " + re + " unless both are 0");
 
 			if (fu == re && fu != 0) {
 				return false;
 			}
 		}
 
-
-
 		// First statlist in func call
 		if (wasFuncCall) {
 			wasFuncCall = false;
 			int increment = functionBodyMap.getOrDefault(node.hashCode(), 0);
 			functionBodyMap.put(node.hashCode(), ++increment);
-			// int increment = ++functionBodyCount;
-			System.out.println("Function Stack incremented to " + increment + " for " + node.hashCode());
+			// System.out.println("Function Stack incremented to " + increment + " for " + node.hashCode());
 		}
 
 		// Return in func call
 		if (node.getRuleContext() instanceof SimpleBCParser.ReturnStatContext) {
 			int increment = returnMap.getOrDefault(node.getParent().hashCode(), 0);
 			returnMap.put(node.getParent().hashCode(), ++increment);
-			// int increment = ++returnCount;
-			System.out.println("Return Stack incremented to " + increment + " for " + node.getParent().hashCode());
-			// wasReturn = true;
+			// System.out.println("Return Stack incremented to " + increment + " for " + node.getParent().hashCode());
 		}
-
-
-
-/* 		if (wasReturn) {
-			wasReturn = false;
-			int increment = ++returnCount;
-			System.out.println("Return Stack incremented to " + increment + " for " + node.getParent().hashCode() );
-		} */
 
 		// Mark there was a func call for the next round to use
 		if (node.getRuleContext() instanceof SimpleBCParser.FuncCallExprContext) {
 			wasFuncCall = true;
-			System.out.println("That was a function");
-			// int increment = ++functionBodyCount;
-			// System.out.println("Function Stack incremented to " + increment + " for " + node.hashCode());
+			// System.out.println("That was a function");
 		}
-
-
 
 		return true;
 	}
@@ -136,12 +113,12 @@ public class SimpleBCBaseVisitorPlus<T> extends SimpleBCBaseVisitor<T> {
 
 			ParseTree c = node.getChild(i);
 			T childResult = c.accept(this);
-			if (childResult != null) {
+			/* if (childResult != null) {
 				String test = childResult.toString();
 				System.out.println("Child result is: " + test);
 			} else {
 				System.out.println("Child result is NULL");
-			}
+			} */
 			result = aggregateResult(result, childResult);
 		}
 

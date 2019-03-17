@@ -39,11 +39,12 @@ gTest(2)
 		return (k)
 	} else return (hTest(--j, ++k));
 }
-hTest(5, 0)*/
+hTest(5, 0) # result hellohellohellohellohellohello5
 
 define fTest(x) {
 	if (x <= 1) return (1);
 	return (fTest(x-1) * x);
 }
 
-fTest(13)
+fTest(13) # result 6227020800
+*/

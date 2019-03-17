@@ -48,8 +48,8 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 				result = visit(body);
 			}
 
-			String test = result.toString();
-			System.out.println("The function result is: " + test);
+			// String test = result.toString();
+			// System.out.println("The function result is: " + test);
 
 			// Remove the new scope
 			endScope();
@@ -160,16 +160,16 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 	public BigDecimal visitStatList(SimpleBCParser.StatListContext ctx) {
 		BigDecimal result = visitChildren(ctx);
 
-		if (result == null) {
+		/* if (result == null) {
 			System.out.println("Stat list result is null");
 		} else {
 			System.out.println("Stat list result is not null");
-		}
+		} */
 
 		if (ctx.getChild(ctx.getChildCount() - 1) instanceof SimpleBCParser.ReturnStatContext == false) {
 			result = BigDecimal.ZERO;
 		}
-		String test = result.toString();
+		// String test = result.toString();
 		return result;
 	}
 
@@ -199,7 +199,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 	@Override
 	public BigDecimal visitReturnValue(SimpleBCParser.ReturnValueContext ctx) {
 		BigDecimal debugResult = visit(ctx.expr());
-		String test = debugResult.toString();
+		// String test = debugResult.toString();
 		return debugResult;
 	}
 
@@ -270,7 +270,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 				defaultValue = Double.parseDouble(input.nextLine().trim());
 			// Now for user defined functions
 			default:
-				System.out.println("Function call for: " + ctx.ID().getText());
+				// System.out.println("Function call for: " + ctx.ID().getText());
 				return getFunc(ctx.ID().getText()).execute(ctx.arguments());
 		}
 
@@ -284,11 +284,11 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 	public BigDecimal visitIfThen(SimpleBCParser.IfThenContext ctx) {
 		// Check if the expression is truth-y
 		if (0 != BigDecimal.ZERO.compareTo(visit(ctx.expr()))) {
-			System.out.println("I've hit true");
+			// System.out.println("I've hit true");
 			return visit(ctx.stat(0));
 		} else if (ctx.stat().size() > 1){
 			// The expression is false and there is an else block
-			System.out.println("I've hit false");
+			// System.out.println("I've hit false");
 			return visit(ctx.stat(1));
 		} else {
 			// No else block
@@ -402,14 +402,14 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 			case "^":
 				return left.pow(right.intValue());
 			case "*":
-				System.out.println("Multiplied to get: " + left.multiply(right));
+				// System.out.println("Multiplied to get: " + left.multiply(right));
 				return left.multiply(right);
 			case "/":
 				return left.divide(right, getOrCreateVar("scale").intValueExact(), BigDecimal.ROUND_DOWN);
 			case "+":
 				return left.add(right);
 			case "-":
-				System.out.println("Subtracted to get: " + left.subtract(right));
+				// System.out.println("Subtracted to get: " + left.subtract(right));
 				return left.subtract(right);
 			case "<":
 				if (-1 == left.compareTo(right)) {
@@ -419,10 +419,10 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 				}
 			case "<=":
 				if (-1 == left.compareTo(right) || 0 == left.compareTo(right)) {
-					System.out.println("Less than or equal");
+					// System.out.println("Less than or equal");
 					return BigDecimal.ONE;
 				} else {
-					System.out.println("Not less than or equal");
+					// System.out.println("Not less than or equal");
 					return BigDecimal.ZERO;
 				}
 			case ">":
