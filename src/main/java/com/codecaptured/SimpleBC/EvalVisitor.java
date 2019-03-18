@@ -3,15 +3,11 @@ package com.codecaptured.SimpleBC;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import com.codecaptured.SimpleBC.SimpleBCParser.ParenExprContext;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
-
 import java.util.ArrayDeque;
 import java.math.BigDecimal;
 import java.lang.RuntimeException;
 
-public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
+public class EvalVisitor extends SimpleBCBaseVisitor<BigDecimal> {
 
 	/* Utilities and environment */
 
@@ -50,11 +46,15 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 			// Run the function
 			BigDecimal result = BigDecimal.ZERO;
 			if (body != null) {
-				result = visit(body);
+				visit(body);
 			}
 
-			// String test = result.toString();
-			// System.out.println("The function result is: " + test);
+			if (programEnvrioment.getLast().isReturn != null) {
+				result = programEnvrioment.getLast().isReturn;
+				programEnvrioment.getLast().isReturn = null;
+			}
+
+			String test = result.toString();
 
 			// Remove the new scope
 			endScope();
@@ -175,16 +175,16 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 			System.out.println("Stat list result is not null");
 		} */
 
-		if (ctx.getChild(ctx.getChildCount() - 1) instanceof SimpleBCParser.ReturnStatContext == false) {
+		if (result == null) {
 			result = BigDecimal.ZERO;
 		}
-		// String test = result.toString();
+		String test = result.toString();
 		return result;
 	}
 
 	@Override
 	public BigDecimal visitVarStat(SimpleBCParser.VarStatContext ctx) {
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			String var = ctx.varDef().ID().getText();
@@ -196,7 +196,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 
 	@Override
 	public BigDecimal visitExprStat(SimpleBCParser.ExprStatContext ctx) {
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			BigDecimal result = visit(ctx.expr());
@@ -225,7 +225,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 		} else {
 			BigDecimal debugResult = visit(ctx.expr());
 			programEnvrioment.getLast().isReturn = debugResult;
-			// String test = debugResult.toString();
+			String test = debugResult.toString();
 			return debugResult;
 		}
 	}
@@ -248,7 +248,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 	@Override
 	public BigDecimal visitFuncPrint(SimpleBCParser.FuncPrintContext ctx) {
 		// The print function should all the arguments on the same line before returning
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			BigDecimal result = visitChildren(ctx);
@@ -259,7 +259,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 
 	@Override
 	public BigDecimal visitStringPrint(SimpleBCParser.StringPrintContext ctx) {
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			System.out.println(ctx.ID().getText());
@@ -269,7 +269,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 
 	@Override
 	public BigDecimal visitExprPrintEval(SimpleBCParser.ExprPrintEvalContext ctx) {
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			System.out.print(visit(ctx.expr()));
@@ -279,7 +279,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 
 	@Override
 	public BigDecimal visitStringPrintEval(SimpleBCParser.StringPrintEvalContext ctx) {
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			System.out.print(ctx.ID().getText());
@@ -456,7 +456,7 @@ public class EvalVisitor extends SimpleBCBaseVisitorPlus<BigDecimal> {
 	// ID '=' expr
 	@Override
 	public BigDecimal visitVarDefExpr(SimpleBCParser.VarDefExprContext ctx) {
-		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue) {
+		if (programEnvrioment.getLast().isBreak || programEnvrioment.getLast().isContinue || programEnvrioment.getLast().isReturn != null) {
 			return BigDecimal.ZERO;
 		} else {
 			String var = ctx.varDef().ID().getText();

@@ -33,18 +33,20 @@ define gTest(y){
 }
 gTest(2)
 
-/*define hTest(j, k) {
+define hTest(j, k) {
 	print "hello";
 	if (!j) {
 		return (k)
 	} else return (hTest(--j, ++k));
 }
-hTest(5, 0) # result hellohellohellohellohellohello5
+hTest(5, 0)
 
 define fTest(x) {
-	if (x <= 1) return (1);
-	return (fTest(x-1) * x);
+	if (x <= 1) {
+		return (1);
+	} else {
+		return (x * fTest(x-1));
+	}
 }
 
-fTest(13) # result 6227020800
-*/
+fTest(13)
