@@ -51,8 +51,6 @@ Files currently not automatically tested: `read-function.bc`, `print-function.bc
 
 Also, the `scratchpad.bc` is configured to be the automatic test file for the VSCode debugger (press "F5").
 
-<!-- TODO: Get `mvn testing` and JUnit tests working -->
-
 ## Other Info
 
 ### Arbitrary Precision
